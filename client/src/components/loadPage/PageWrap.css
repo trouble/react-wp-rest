@@ -1,0 +1,10 @@
+.page-wrap {
+  padding-left: 6.66667rem;
+  padding-right: 6.66667rem;
+  max-width: 1820px;
+  margin-left: auto;
+  margin-right: auto; }
+  @media (max-width: 1600px) {
+    .page-wrap {
+      padding-left: 2.22222rem;
+      padding-right: 2.22222rem; } }

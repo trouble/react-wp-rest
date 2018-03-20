@@ -1,0 +1,30 @@
+@import './_vars.scss';
+
+textarea,
+select,
+input[type=text],
+input[type=number],
+input[type=tel],
+input[type=password],
+input[type=email],
+input[type=search],
+input[type=date] {
+	outline: none;
+	border: 1px solid darken($light-gray, 14%);
+	color: $gray;
+	font-family: $font-brand;
+	border-radius: rem(.175);
+	font-size: rem(.5);
+	padding: 0 rem(.5);
+	height: rem(1.25);
+	line-height: rem(1.25);
+	box-sizing: border-box;
+
+	&:hover {
+		border-color: darken($light-gray, 30%);
+	}
+
+	&:focus {
+		border-color: darken($light-gray, 45%);
+	}
+}

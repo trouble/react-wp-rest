@@ -1,0 +1,28 @@
+{
+  "name": "react-wp-rest",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "node-sass-chokidar": "^1.1.2",
+    "npm-run-all": "^4.1.2",
+    "react": "^16.2.0",
+    "react-document-meta": "^2.1.2",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "react-transition-group": "^2.2.1",
+    "redux": "^3.7.2",
+    "superagent": "^3.8.2",
+    "superagent-promise": "^1.1.0"
+  },
+  "scripts": {
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm-run-all build-css build-js",
+    "start-js": "react-scripts start",
+    "build-js": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

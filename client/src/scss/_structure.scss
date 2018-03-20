@@ -1,0 +1,122 @@
+@import './_queries.scss';
+
+//////////////////////////////
+// BASELINE GRID
+//////////////////////////////
+
+$body           : 18px;
+$base-px        : 40px;
+$base           : ($base-px / $body) + rem; // This computes to 30px in rem
+
+@function rem($multiplier) {
+	@return ($base-px / $body) * $multiplier + rem;
+}
+
+/////////////////////////////
+// PADDING
+/////////////////////////////
+
+@mixin pad {
+	padding: $base;
+
+	@include tablet {
+		padding: rem(.5);
+	}
+}
+
+@mixin pad-x2 {
+	padding: rem(2);
+
+	@include tablet {
+		padding: $base;
+	}
+
+	@include desktop-height {
+		padding: $base;
+	}
+}
+
+/////////////////////////////
+// VERTICAL PADDING
+/////////////////////////////
+
+@mixin pad-vert {
+	padding-top: $base;
+
+	@include tablet-height {
+		padding-top: rem(.5);
+	}
+
+	@include mobile {
+		padding-top: rem(.5);
+	}
+}
+
+@mixin pad-vert-x2 {
+	padding-top: rem(2);
+	padding-bottom: $base;
+
+	@include tablet-height {
+		padding-top: $base;
+		padding-bottom: 0;
+	}
+
+	@include mobile {
+		padding-top: $base;
+		padding-bottom: 0;
+	}
+}
+
+@mixin pad-vert-x3 {
+	padding-top: rem(3);
+	padding-bottom: rem(2);
+
+	@include tablet-height {
+		padding-top: rem(2);
+		padding-bottom: $base;
+	}
+
+	@include mobile {
+		padding-top: rem(2);
+		padding-bottom: $base;
+	}
+}
+
+@mixin pad-vert-x4 {
+	padding-top: rem(4);
+	padding-bottom: rem(3);
+
+	@include tablet-height {
+		padding-top: rem(2);
+		padding-bottom: $base;
+	}
+
+	@include mobile {
+		padding-top: rem(2);
+		padding-bottom: $base;
+	}
+}
+
+/////////////////////////////
+// MARGIN
+/////////////////////////////
+
+@mixin m {
+	margin-bottom: $base;
+}
+
+@mixin m-x2 {
+	margin-bottom: rem(2);
+
+	@include tablet-height {
+		margin-bottom: $base;
+	}
+}
+
+@mixin m-x3 {
+	margin-bottom: rem(3);
+
+	@include tablet-height {
+		margin-bottom: rem(2);
+	}
+}

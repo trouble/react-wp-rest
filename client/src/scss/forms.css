@@ -1,0 +1,39 @@
+textarea,
+select,
+input[type=text],
+input[type=number],
+input[type=tel],
+input[type=password],
+input[type=email],
+input[type=search],
+input[type=date] {
+  outline: none;
+  border: 1px solid #cccccc;
+  color: #666666;
+  font-family: sans-serif;
+  border-radius: 0.38889rem;
+  font-size: 1.11111rem;
+  padding: 0 1.11111rem;
+  height: 2.77778rem;
+  line-height: 2.77778rem;
+  box-sizing: border-box; }
+  textarea:hover,
+  select:hover,
+  input[type=text]:hover,
+  input[type=number]:hover,
+  input[type=tel]:hover,
+  input[type=password]:hover,
+  input[type=email]:hover,
+  input[type=search]:hover,
+  input[type=date]:hover {
+    border-color: #a4a4a4; }
+  textarea:focus,
+  select:focus,
+  input[type=text]:focus,
+  input[type=number]:focus,
+  input[type=tel]:focus,
+  input[type=password]:focus,
+  input[type=email]:focus,
+  input[type=search]:focus,
+  input[type=date]:focus {
+    border-color: #7d7d7d; }
