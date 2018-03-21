@@ -1,0 +1,9 @@
+@import '../../scss/_structure.scss';
+@import '../../scss/_queries.scss';
+@import '../../scss/_vars.scss';
+
+.page-wrap {
+	max-width: 1820px;
+	margin-left: auto;
+	margin-right: auto;
+}

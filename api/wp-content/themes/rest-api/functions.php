@@ -1,5 +1,10 @@
 <?php
 
+//////////////////////////////
+// MISC SETUP
+//////////////////////////////
+
+// Register menus
 add_action( 'after_setup_theme', 'react_wp_rest_setup' );
 function react_wp_rest_setup() {
 	register_nav_menus(
@@ -8,14 +13,23 @@ function react_wp_rest_setup() {
 }
 
 // Enable upload of VCF, SVG
-
 function custom_mime_types($mime_types){
 	$mime_types['svg'] = 'image/svg+xml'; //Adding svg extension
 	return $mime_types;
 }
 add_filter('upload_mimes', 'custom_mime_types', 1, 1);
 
-// post types
+// Clear REST API cache on post save
+add_action( 'save_post', function( $post_id ) {
+	if ( class_exists( 'WP_REST_Cache' ) ) {
+		WP_REST_Cache::empty_cache();
+	}
+});
+
+//////////////////////////////
+// REGISTER POST TYPES
+//////////////////////////////
+
 register_post_type( 'static-content', array(
 	'public' => true,
 	'has_archive' => true,
@@ -39,6 +53,10 @@ register_post_type( 'static-content', array(
 	'supports' => array( 'title', 'editor', 'thumbnail' ),
 	'show_in_rest' => true
 ) );
+
+//////////////////////////////
+// ADD REST ROUTES
+//////////////////////////////
 
 function get_main_menu() {
 	# Change 'menu' to your own navigation slug.

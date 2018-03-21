@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import ContentBlock from '../../Utilities/ContentBlock';
 import loadPage from '../../loadPage';
 
 import './Home.css';
@@ -15,9 +16,7 @@ class Home extends Component {
 			return (
 				<article className="home">
 					<h1>{data.title.rendered}</h1>
-					<div>
-						{data.content.rendered}
-					</div>
+					<ContentBlock content={data.content.rendered} />
 				</article>
 			);
 		} else {

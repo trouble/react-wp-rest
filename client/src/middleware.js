@@ -7,8 +7,8 @@ const promiseMiddleware = store => next => action => {
 			},
 			error => {
 				action.error = true;
-				action.payload = error.response.body;
-				console.warn(action.error);
+				action.payload = error;
+				console.warn(error);
 			}
 		);
 

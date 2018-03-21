@@ -11,7 +11,7 @@ import DocumentMeta from 'react-document-meta';
 
 import api from '../../api';
 
-import './PageWrap.css';
+import './loadPage.css';
 
 const pageWrap = (PassedComponent) => {
 

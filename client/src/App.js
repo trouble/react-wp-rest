@@ -51,7 +51,7 @@ class App extends Component {
 								key={i}
 								component={ templates[route.template] }
 								path={`/${route.path}`}
-							/> 
+							/>
 						)
 					}),
 					<Route key="not-found" render={() => (<Redirect to="/not-found" />)} />
