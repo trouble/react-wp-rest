@@ -60,3 +60,6 @@ typings/
 
 # docker-compose
 api/docker-compose.yml
+
+# wp-config
+api/wp-config.php
