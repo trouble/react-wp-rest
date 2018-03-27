@@ -63,3 +63,6 @@ api/docker-compose.yml
 
 # wp-config
 api/wp-config.php
+
+#
+client/build
