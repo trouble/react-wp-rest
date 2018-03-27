@@ -1,14 +1,15 @@
-var express = require('express'),
-        app = express(),
-        path = require('path');
+import express from 'express';
+import serverRenderer from './middleware/renderer';
+
+const app = express();
+const path = require('path');
+const port = 1337;
+
+app.use('^/$', serverRenderer);
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname + '/build/index.html'));
-});
-
-const port = 1337;
+app.use('*', serverRenderer);
 
 app.listen(port);
 
