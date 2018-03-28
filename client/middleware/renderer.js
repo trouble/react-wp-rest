@@ -38,7 +38,7 @@ export default (store) => (req, res, next) => {
 		const html = ReactDOMServer.renderToString(
 			<Loadable.Capture report={m => modules.push(m)}>
 				<Provider store={store}>
-					<Router location={req.url} context={context}>
+					<Router location={req.originalUrl} context={context}>
 						<App />
 					</Router>
 				</Provider>

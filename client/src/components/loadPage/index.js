@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DocumentMeta from 'react-document-meta';
+import { withRouter } from 'react-router-dom';
 
 import api from '../../api';
 
@@ -25,6 +26,7 @@ const pageWrap = (PassedComponent) => {
 	class PageWrap extends Component {
 
 		componentWillMount() {
+
 			// Grab the pathname to get page by slug
 			this.slug = this.props.match.path.replace('/', '');
 
@@ -60,7 +62,7 @@ const pageWrap = (PassedComponent) => {
 		}
 	}
 
-	return connect(mapStateToProps, mapDispatchToProps)(PageWrap);
+	return withRouter(connect(mapStateToProps, mapDispatchToProps)(PageWrap));
 }
 
 export default pageWrap;
