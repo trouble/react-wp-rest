@@ -4,7 +4,6 @@
 // Also handles loading meta data per page
 ///////////////////////////////////////////////////////
 
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DocumentMeta from 'react-document-meta';
@@ -26,7 +25,6 @@ const pageWrap = (PassedComponent) => {
 	class PageWrap extends Component {
 
 		componentWillMount() {
-
 			// Grab the pathname to get page by slug
 			this.slug = this.props.match.path.replace('/', '');
 

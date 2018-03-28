@@ -1,4 +1,5 @@
-import { applyMiddleware, createStore, combineReducers } from 'redux';
+import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
+import ReduxThunk from 'redux-thunk'
 import { promiseMiddleware } from './middleware';
 
 import menus from './reducers/menus';
@@ -11,6 +12,11 @@ const reducers = combineReducers({
 	pages
 });
 
-const store = createStore(reducers, applyMiddleware(promiseMiddleware));
+const createStoreWithMiddleware = compose(applyMiddleware(
+	ReduxThunk,
+	promiseMiddleware
+))(createStore);
 
-export default store;
+export default function configureStore(initialState = {}) {
+	return createStoreWithMiddleware(reducers, initialState);
+}

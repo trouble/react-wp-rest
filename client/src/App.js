@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
+import Loadable from 'react-loadable';
+import DocumentMeta from 'react-document-meta';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './components/Templates/Home';
-import Default from './components/Templates/Default';
 
 import api from './api';
 
@@ -19,15 +19,35 @@ const mapDispatchToProps = (dispatch) => ({
 	loadPages: (list) => dispatch({ type: 'LOAD_PAGES_LIST', payload: list })
 });
 
+const AsyncHome = Loadable({
+  loader: () => import( /* webpackChunkName: "Home" */ './components/Templates/Home'),
+  loading: () => <div></div>,
+});
+
+const AsyncDefault = Loadable({
+  loader: () => import( /* webpackChunkName: "Default" */ './components/Templates/Default'),
+  loading: () => <div></div>,
+});
+
 const templates = {
-	home: Home,
-	default: Default
+	home: AsyncHome,
+	default: AsyncDefault
 }
 
 class App extends Component {
 
 	constructor(props) {
 		super(props);
+
+		this.defaultMeta = {
+			title: 'Default Title',
+			description: 'Default Description',
+			meta: {
+				name: {
+					keywords: 'Default Keywords'
+				}
+			}	
+		}
 
 		this.buildRoutes = (routes) => {
 
@@ -67,15 +87,14 @@ class App extends Component {
 	render() {
 
 		return (
-			<Router>
-				<div className={`app`}>
-					<Header />
-					<Switch>
-						{ this.buildRoutes(this.props.pageList) }
-					</Switch>
-					<Footer />
-				</div>
-			</Router>
+			<div className={`app`}>
+				<DocumentMeta {...this.defaultMeta} />
+				<Header />
+				<Switch>
+					{ this.buildRoutes(this.props.pageList) }
+				</Switch>
+				<Footer />
+			</div>
 		);
 	}
 }
