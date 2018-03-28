@@ -9,8 +9,6 @@ import DocumentMeta from 'react-document-meta';
 
 import App from '../src/App';
 
-require('dotenv').load();
-
 const path = require('path');
 const fs = require('fs');
 
@@ -49,27 +47,22 @@ export default (store) => (req, res, next) => {
 
 		const reduxState = JSON.stringify(store.getState());
 
-		if (context.url) {
-			// Somewhere a `<Redirect>` was rendered
-			redirect(301, context.url)
-		} else {
-			return res.send(
-				htmlData.replace(
-					`<div id="root"></div>`,
-					`<div id="root">${html}</div>`
-				)
-				.replace(
-					'</body>',
-					extraChunks.join('') + '</body>'
-				)
-				.replace(
-					'"__SERVER_REDUX_STATE__"',
-					reduxState
-				).replace(
-					'</head>',
-					`${meta}</head>`
-				)
-			);
-		}
+		return res.send(
+			htmlData.replace(
+				`<div id="root"></div>`,
+				`<div id="root">${html}</div>`
+			)
+			.replace(
+				'</body>',
+				extraChunks.join('') + '</body>'
+			)
+			.replace(
+				'"__SERVER_REDUX_STATE__"',
+				reduxState
+			).replace(
+				'</head>',
+				`${meta}</head>`
+			)
+		);
 	});
 }
