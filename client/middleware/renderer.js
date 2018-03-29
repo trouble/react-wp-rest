@@ -12,9 +12,30 @@ import App from '../src/App';
 const path = require('path');
 const fs = require('fs');
 
+// Extracts filesnames from all code split chunks
+// imported from the manifest given by CRA / Webpack / Loadable
 const extractAssets = (assets, chunks) => Object.keys(assets)
 	.filter(asset => chunks.indexOf(asset.replace('.js', '')) > -1)
 	.map(k => assets[k]);
+
+// This function removes all pages 
+// besides the page requested from the server
+const filterPageStore = (state, url) => {
+	// Remove leading slash from URL
+	let slug = url.replace(/^\/+/g, '');
+
+	// If no slug, assume homepage
+	slug = slug.length === 0 ? 'home' : slug;
+
+	// If page found in state, remove all besides page in question
+	if (state.pages.pages[slug]) {
+		let currentPage = state.pages.pages[slug];
+		state.pages.pages = {};
+		state.pages.pages[slug] = currentPage;
+	}
+
+	return JSON.stringify(state);
+}
 
 export default (store) => (req, res, next) => {
 	// point to HTML from CRA
@@ -45,7 +66,7 @@ export default (store) => (req, res, next) => {
 
 		const meta = DocumentMeta.renderAsHTML();
 
-		const reduxState = JSON.stringify(store.getState());
+		let pageState = filterPageStore(store.getState(), req.originalUrl);
 
 		return res.send(
 			htmlData.replace(
@@ -57,8 +78,8 @@ export default (store) => (req, res, next) => {
 				extraChunks.join('') + '</body>'
 			)
 			.replace(
-				'"__SERVER_REDUX_STATE__"',
-				reduxState
+				'"__SERVER_PAGE_STATE__"',
+				pageState
 			).replace(
 				'</head>',
 				`${meta}</head>`

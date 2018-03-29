@@ -8,7 +8,7 @@ import App from './App';
 
 if (process.env.NODE_ENV === 'production') {
 
-	const store = configureStore( window.REDUX_STATE || {} );
+	const store = configureStore( window.PAGE_STATE || {} );
 
 	window.onload = () => {
 		Loadable.preloadReady().then(() => {
