@@ -41,13 +41,23 @@ const pageWrap = (PassedComponent) => {
 
 			let page = this.props.pages[this.slug];
 
+			let Meta = () => null;
+
+			if (page) {
+				Meta = () => {
+					return (
+						<Helmet>
+							<title>{page.acf.metaTitle}</title>
+							<meta name="description" content={page.acf.metaDescription} />
+							<meta name="keywords" content={page.acf.metaKeywords} />
+						</Helmet>
+					)
+				}
+			}
+
 			return (
 				<div className="page-wrap">
-					<Helmet>
-						<title>{page.acf.metaTitle}</title>
-						<meta name="description" content={page.acf.metaDescription} />
-						<meta name="keywords" content={page.acf.metaKeywords} />
-					</Helmet>
+					<Meta />
 					<PassedComponent data={page} match={this.props.match} />
 				</div>
 			);

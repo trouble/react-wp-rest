@@ -21,10 +21,17 @@ const extractAssets = (assets, chunks) => Object.keys(assets)
 
 // This function removes all pages 
 // besides the page requested from the server
-const filterPageStore = (state, slug) => {
+const filterPageStore = (state, url) => {
+
+	// Remove leading slash from URL
+	let slug = url.replace(/^\/+/g, '');
+
+	// If no slug, assume homepage
+	slug = slug.length === 0 ? 'home' : slug;
 
 	// If page found in state, remove all besides page in question
 	if (state.pages.pages[slug]) {
+
 		return JSON.stringify({
 			...state,
 			pages: {
@@ -42,64 +49,47 @@ export default (store) => (req, res, next) => {
 	// point to HTML from CRA
 	const filePath = path.resolve(__dirname, '..', 'build', 'index.html');
 
-	// Remove leading slash from URL
-	let slug = req.originalUrl.replace(/^\/+/g, '');
+	fs.readFile(filePath, 'utf8', (err, htmlData) => {
+		if (err) {
+			console.log('err', err);
+			return res.status(404).end();
+		}
 
-	// If no slug, assume homepage
-	slug = slug.length === 0 ? 'home' : slug;
+		const context = {}
 
-	api.Pages.bySlug(slug).then((response) => {
+		const modules = [];
 
-		store.dispatch({
-			type: 'LOAD_PAGE',
-			payload: response
-		});
+		const extraChunks = extractAssets(manifest, modules)
+			.map(c => `<script type="text/javascript" src="/${c}"></script>`);
 
-		fs.readFile(filePath, 'utf8', (err, htmlData) => {
-			if (err) {
-				console.log('err', err);
-				return res.status(404).end();
-			}
+		const html = ReactDOMServer.renderToString(
+			<Loadable.Capture report={m => modules.push(m)}>
+				<Provider store={store}>
+					<Router location={req.originalUrl} context={context}>
+						<App />
+					</Router>
+				</Provider>
+			</Loadable.Capture>
+		);
 
-			const context = {}
+		const helmet = Helmet.renderStatic();
 
-			const modules = [];
-
-			const extraChunks = extractAssets(manifest, modules)
-				.map(c => `<script type="text/javascript" src="/${c}"></script>`);
-
-			const html = ReactDOMServer.renderToString(
-				<Loadable.Capture report={m => modules.push(m)}>
-					<Provider store={store}>
-						<Router location={req.originalUrl} context={context}>
-							<App />
-						</Router>
-					</Provider>
-				</Loadable.Capture>
-			);
-
-			const helmet = Helmet.renderStatic();
-
-			return res.send(
-				htmlData.replace(
-					`<div id="root"></div>`,
-					`<div id="root">${html}</div>`
-				)
-				.replace(
-					'</body>',
-					extraChunks.join('') + '</body>'
-				)
-				.replace(
-					'"__SERVER_PAGE_STATE__"',
-					filterPageStore(store.getState(), slug)
-				).replace(
-					'</head>',
-					`${helmet.title.toString()}${helmet.meta.toString()}</head>`
-				)
-			);
-		});
-	}, (error) => {
-		console.warn(error);
-		return res.status(404).end();
-	})
+		return res.send(
+			htmlData.replace(
+				`<div id="root"></div>`,
+				`<div id="root">${html}</div>`
+			)
+			.replace(
+				'</body>',
+				extraChunks.join('') + '</body>'
+			)
+			.replace(
+				'"__SERVER_PAGE_STATE__"',
+				filterPageStore(store.getState(), req.originalUrl)
+			).replace(
+				'</head>',
+				`${helmet.title.toString()}${helmet.meta.toString()}</head>`
+			)
+		);
+	});
 }
