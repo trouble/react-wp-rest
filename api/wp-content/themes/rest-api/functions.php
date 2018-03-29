@@ -99,6 +99,7 @@ function get_pages_list() {
 			$template = str_replace('page-', '', $template);
 
 			$name = array(
+				'path' => get_page_uri($page->ID),
 				'slug' => $page->post_name,
 				'template' => $template
 			);

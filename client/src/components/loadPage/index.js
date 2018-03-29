@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
 
 import api from '../../api';
 
@@ -16,6 +15,7 @@ import './loadPage.css';
 const pageWrap = (PassedComponent) => {
 
 	const mapStateToProps = state => ({
+		list: state.pages.list,
 		pages: state.pages.pages
 	});
 
@@ -27,19 +27,13 @@ const pageWrap = (PassedComponent) => {
 
 		componentWillMount() {
 
-			// Grab the pathname to get page by slug
-			this.slug = this.props.match.path.replace('/', '');
-
-			// If homepage, fetch homepage content
-			this.slug = this.slug === '' ? 'home' : this.slug; 
-
 			// Load page content from API by slug
-			this.props.load(api.Pages.bySlug(this.slug));
+			this.props.load(api.Pages.bySlug(this.props.slug));
 		}
 
 		render() {
 
-			let page = this.props.pages[this.slug];
+			let page = this.props.pages[this.props.slug];
 
 			let Meta = () => null;
 
@@ -58,13 +52,13 @@ const pageWrap = (PassedComponent) => {
 			return (
 				<div className="page-wrap">
 					<Meta />
-					<PassedComponent data={page} match={this.props.match} />
+					<PassedComponent data={page} slug={this.props.slug} />
 				</div>
 			);
 		}
 	}
 
-	return withRouter(connect(mapStateToProps, mapDispatchToProps)(PageWrap));
+	return connect(mapStateToProps, mapDispatchToProps)(PageWrap);
 }
 
 export default pageWrap;

@@ -9,14 +9,12 @@ class Default extends Component {
 
 	render() {
 
-		let slug = this.props.match.path.replace('/', '');
-
 		if (this.props.data) {
 
 			let data = this.props.data;
 
 			return (
-				<article className={`${slug} default-template`}>
+				<article className={`${this.props.slug} default-template`}>
 					<h1>{data.title.rendered}</h1>
 					<ContentBlock content={data.content.rendered} />
 				</article>

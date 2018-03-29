@@ -47,18 +47,20 @@ class App extends Component {
 						// If home, set path to empty string, = '/'
 						route.slug === 'home' 
 							? route.path = ''
-							: route.path = route.slug;
+							: route.path = route.path;
 
 						// If template is blank, set to default
 						route.template === '' 
 							? route.template = 'default'
 							: route.template = route.template;
 
+						const Component = templates[route.template];
+
 						return (
 							<Route
+								render={()=><Component slug={route.slug}/>}
 								exact
 								key={i}
-								component={ templates[route.template] }
 								path={`/${route.path}`}
 							/>
 						)
