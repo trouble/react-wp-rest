@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import DocumentMeta from 'react-document-meta';
+import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 
 import api from '../../api';
@@ -41,21 +41,13 @@ const pageWrap = (PassedComponent) => {
 
 			let page = this.props.pages[this.slug];
 
-			let meta = {};
-
-			if (page) {
-				meta.title = page.acf.metaTitle;
-				meta.description = page.acf.metaDescription;
-				meta.meta = {
-					name: {
-						keywords: page.acf.metaKeywords
-					}
-				}
-			}
-
 			return (
 				<div className="page-wrap">
-					<DocumentMeta {...meta} />
+					<Helmet>
+						<title>{page.acf.metaTitle}</title>
+						<meta name="description" content={page.acf.metaDescription} />
+						<meta name="keywords" content={page.acf.metaKeywords} />
+					</Helmet>
 					<PassedComponent data={page} match={this.props.match} />
 				</div>
 			);

@@ -5,7 +5,7 @@ import Loadable from 'react-loadable';
 import manifest from '../build/asset-manifest.json';
 import { Provider } from 'react-redux';
 import { StaticRouter as Router } from 'react-router-dom'
-import DocumentMeta from 'react-document-meta';
+import { Helmet } from 'react-helmet';
 
 import api from '../src/api';
 import App from '../src/App';
@@ -18,6 +18,25 @@ const fs = require('fs');
 const extractAssets = (assets, chunks) => Object.keys(assets)
 	.filter(asset => chunks.indexOf(asset.replace('.js', '')) > -1)
 	.map(k => assets[k]);
+
+// This function removes all pages 
+// besides the page requested from the server
+const filterPageStore = (state, slug) => {
+
+	// If page found in state, remove all besides page in question
+	if (state.pages.pages[slug]) {
+		return JSON.stringify({
+			...state,
+			pages: {
+				pages: {
+					[slug]: state.pages.pages[slug]
+				}
+			}
+		});
+	}
+
+	return JSON.stringify(state);
+}
 
 export default (store) => (req, res, next) => {
 	// point to HTML from CRA
@@ -59,7 +78,7 @@ export default (store) => (req, res, next) => {
 				</Loadable.Capture>
 			);
 
-			const meta = DocumentMeta.renderAsHTML();
+			const helmet = Helmet.renderStatic();
 
 			return res.send(
 				htmlData.replace(
@@ -72,10 +91,10 @@ export default (store) => (req, res, next) => {
 				)
 				.replace(
 					'"__SERVER_PAGE_STATE__"',
-					JSON.stringify(store.getState())
+					filterPageStore(store.getState(), slug)
 				).replace(
 					'</head>',
-					`${meta}</head>`
+					`${helmet.title.toString()}${helmet.meta.toString()}</head>`
 				)
 			);
 		});
