@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
-import { Helmet } from 'react-helmet';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -78,11 +77,6 @@ class App extends Component {
 
 		return (
 			<div className={`app`}>
-				<Helmet>
-					<title>Default Title</title>
-					<meta name="description" content="Default Description" />
-					<meta name="keywords" content="Default Keywords" />
-				</Helmet>
 				<Header />
 				<Switch>
 					{ this.buildRoutes(this.props.pageList) }
