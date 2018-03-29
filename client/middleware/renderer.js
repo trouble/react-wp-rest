@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { StaticRouter as Router } from 'react-router-dom'
 import DocumentMeta from 'react-document-meta';
 
+import api from '../src/api';
 import App from '../src/App';
 
 const path = require('path');
@@ -18,72 +19,68 @@ const extractAssets = (assets, chunks) => Object.keys(assets)
 	.filter(asset => chunks.indexOf(asset.replace('.js', '')) > -1)
 	.map(k => assets[k]);
 
-// This function removes all pages 
-// besides the page requested from the server
-const filterPageStore = (state, url) => {
-	// Remove leading slash from URL
-	let slug = url.replace(/^\/+/g, '');
-
-	// If no slug, assume homepage
-	slug = slug.length === 0 ? 'home' : slug;
-
-	// If page found in state, remove all besides page in question
-	if (state.pages.pages[slug]) {
-		let currentPage = state.pages.pages[slug];
-		state.pages.pages = {};
-		state.pages.pages[slug] = currentPage;
-	}
-
-	return JSON.stringify(state);
-}
-
 export default (store) => (req, res, next) => {
 	// point to HTML from CRA
 	const filePath = path.resolve(__dirname, '..', 'build', 'index.html');
 
-	fs.readFile(filePath, 'utf8', (err, htmlData) => {
-		if (err) {
-			console.log('err', err);
-			return res.status(404).end();
-		}
+	// Remove leading slash from URL
+	let slug = req.originalUrl.replace(/^\/+/g, '');
 
-		const context = {}
+	// If no slug, assume homepage
+	slug = slug.length === 0 ? 'home' : slug;
 
-		const modules = [];
+	api.Pages.bySlug(slug).then((response) => {
 
-		const extraChunks = extractAssets(manifest, modules)
-			.map(c => `<script type="text/javascript" src="/${c}"></script>`);
+		store.dispatch({
+			type: 'LOAD_PAGE',
+			payload: response
+		});
 
-		const html = ReactDOMServer.renderToString(
-			<Loadable.Capture report={m => modules.push(m)}>
-				<Provider store={store}>
-					<Router location={req.originalUrl} context={context}>
-						<App />
-					</Router>
-				</Provider>
-			</Loadable.Capture>
-		);
+		fs.readFile(filePath, 'utf8', (err, htmlData) => {
+			if (err) {
+				console.log('err', err);
+				return res.status(404).end();
+			}
 
-		const meta = DocumentMeta.renderAsHTML();
+			const context = {}
 
-		let pageState = filterPageStore(store.getState(), req.originalUrl);
+			const modules = [];
 
-		return res.send(
-			htmlData.replace(
-				`<div id="root"></div>`,
-				`<div id="root">${html}</div>`
-			)
-			.replace(
-				'</body>',
-				extraChunks.join('') + '</body>'
-			)
-			.replace(
-				'"__SERVER_PAGE_STATE__"',
-				pageState
-			).replace(
-				'</head>',
-				`${meta}</head>`
-			)
-		);
-	});
+			const extraChunks = extractAssets(manifest, modules)
+				.map(c => `<script type="text/javascript" src="/${c}"></script>`);
+
+			const html = ReactDOMServer.renderToString(
+				<Loadable.Capture report={m => modules.push(m)}>
+					<Provider store={store}>
+						<Router location={req.originalUrl} context={context}>
+							<App />
+						</Router>
+					</Provider>
+				</Loadable.Capture>
+			);
+
+			const meta = DocumentMeta.renderAsHTML();
+
+			return res.send(
+				htmlData.replace(
+					`<div id="root"></div>`,
+					`<div id="root">${html}</div>`
+				)
+				.replace(
+					'</body>',
+					extraChunks.join('') + '</body>'
+				)
+				.replace(
+					'"__SERVER_PAGE_STATE__"',
+					JSON.stringify(store.getState())
+				).replace(
+					'</head>',
+					`${meta}</head>`
+				)
+			);
+		});
+	}, (error) => {
+		console.warn(error);
+		return res.status(404).end();
+	})
 }
