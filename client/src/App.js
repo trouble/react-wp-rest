@@ -26,6 +26,12 @@ class App extends Component {
 
 			if (this.props.pageList && this.props.pageList.length > 0) {
 				return [
+					<Route
+						key="posts"
+						render={()=><LoadTemplate template="post" type="posts" />}
+						exact
+						path="/posts/:slug"
+					/>,
 					routes.map((route, i) => {
 
 						// If home, set path to empty string, = '/'

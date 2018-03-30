@@ -6,16 +6,30 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import configureStore from './store';
 import App from './App';
 
-const store = configureStore( window.PAGE_STATE || {} );
+if (process.env.NODE_ENV === 'production') {
 
-window.onload = () => {
-	Loadable.preloadReady().then(() => {
-		ReactDOM.hydrate(
-			<Provider store={store}>
-				<Router>
-					<App />
-				</Router>
-			</Provider>
-		, document.getElementById('root'));
-	})
+	const store = configureStore( window.PAGE_STATE || {} );
+
+	window.onload = () => {
+		Loadable.preloadReady().then(() => {
+			ReactDOM.hydrate(
+				<Provider store={store}>
+					<Router>
+						<App />
+					</Router>
+				</Provider>
+			, document.getElementById('root'));
+		})
+	}
+} else {
+
+	const store = configureStore();
+
+	ReactDOM.render(
+		<Provider store={store}>
+			<Router>
+				<App />
+			</Router>
+		</Provider>
+	, document.getElementById('root'));
 }

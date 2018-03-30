@@ -36,4 +36,33 @@ add_action( 'rest_api_init', function () {
 	) );
 } );
 
+function get_post_routes() {
+	# Change 'menu' to your own navigation slug.
+	$posts = get_posts();
+	$names = [];
+
+	foreach ($posts as $post) {
+		if ($post->post_status === 'publish') {
+
+			$name = array(
+				'path' => 'posts/' . $post->post_name,
+				'slug' => $post->post_name,
+				'template' => 'post',
+				'type' => 'post'
+			);
+
+			array_push($names, $name);
+		}
+	}
+
+	return $names;
+}
+
+add_action( 'rest_api_init', function () {
+	register_rest_route( 'posts', '/list', array(
+		'methods' => 'GET',
+		'callback' => 'get_post_routes',
+	) );
+} );
+
 ?>

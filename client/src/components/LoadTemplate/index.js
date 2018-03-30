@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Loadable from 'react-loadable';
 
@@ -21,9 +22,15 @@ const AsyncDefault = Loadable({
   loading: () => <div></div>,
 });
 
+const AsyncPost = Loadable({
+  loader: () => import( /* webpackChunkName: "Post" */ '../Templates/Post'),
+  loading: () => <div></div>,
+});
+
 const templates = {
 	home: AsyncHome,
-	default: AsyncDefault
+	default: AsyncDefault,
+	post: AsyncPost
 }
 
 const mapStateToProps = state => ({
@@ -36,21 +43,28 @@ const mapDispatchToProps = dispatch => ({
 
 class LoadTemplate extends Component {
 
+	constructor(props) {
+		super(props);
+
+		// Slug will either come from a prop or a URL param from React Router
+		this.slug = this.props.slug ? this.props.slug : this.props.match.params.slug;
+	}
+
 	componentWillMount() {
 
-		if (!this.props.data[this.props.slug]) {
+		if (!this.props.data[this.slug]) {
 			// Load page content from API by slug
-			this.props.load(api.Content.dataBySlug(this.props.type, this.props.slug));
+			this.props.load(api.Content.dataBySlug(this.props.type, this.slug));
 		}
 	}
 
 	render() {
 
-		let data = this.props.data[this.props.slug];
+		let data = this.props.data[this.slug];
 
 		let Meta = () => null;
 
-		if (data) {
+		if (data && data.acf) {
 			Meta = () => {
 				return (
 					<Helmet>
@@ -67,10 +81,10 @@ class LoadTemplate extends Component {
 		return (
 			<React.Fragment>
 				<Meta />
-				<Template data={data} slug={this.props.slug} />
+				<Template data={data} slug={this.slug} />
 			</React.Fragment>
 		);
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadTemplate);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoadTemplate));
