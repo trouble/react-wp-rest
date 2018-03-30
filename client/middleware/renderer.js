@@ -21,7 +21,7 @@ const extractAssets = (assets, chunks) => Object.keys(assets)
 
 // This function removes all pages 
 // besides the page requested from the server
-const filterPageStore = (state, url) => {
+const filterDataStore = (state, url) => {
 
 	// Remove leading slash from URL
 	let slug = url.replace(/^\/+/g, '');
@@ -29,20 +29,30 @@ const filterPageStore = (state, url) => {
 	// If no slug, assume homepage
 	slug = slug.length === 0 ? 'home' : slug;
 
+	// If multiple URL segments, trim to last one (slug)
+	slug = slug.substr(slug.lastIndexOf('/') + 1);
+
 	// If page found in state, remove all besides page in question
-	if (state.pages.pages[slug]) {
+	if (state.content.data[slug]) {
+
+		console.log('found corresponding data');
 
 		return JSON.stringify({
 			...state,
-			pages: {
-				pages: {
-					[slug]: state.pages.pages[slug]
+			content: {
+				data: {
+					[slug]: state.content.data[slug]
 				}
 			}
 		});
 	}
 
-	return JSON.stringify(state);
+	return JSON.stringify({
+		...state,
+		content: {
+			data: {}
+		}
+	});
 }
 
 export default (store) => (req, res, next) => {
@@ -65,7 +75,7 @@ export default (store) => (req, res, next) => {
 		const html = ReactDOMServer.renderToString(
 			<Loadable.Capture report={m => modules.push(m)}>
 				<Provider store={store}>
-					<Router location={req.originalUrl} context={context}>
+					<Router location={req.baseUrl} context={context}>
 						<App />
 					</Router>
 				</Provider>
@@ -85,7 +95,7 @@ export default (store) => (req, res, next) => {
 			)
 			.replace(
 				'"__SERVER_PAGE_STATE__"',
-				filterPageStore(store.getState(), req.originalUrl)
+				filterDataStore(store.getState(), req.baseUrl)
 			).replace(
 				'</head>',
 				`${helmet.title.toString()}${helmet.meta.toString()}</head>`

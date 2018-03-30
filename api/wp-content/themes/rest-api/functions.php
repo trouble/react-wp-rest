@@ -101,8 +101,10 @@ function get_pages_list() {
 			$name = array(
 				'path' => get_page_uri($page->ID),
 				'slug' => $page->post_name,
-				'template' => $template
+				'template' => $template,
+				'type' => 'pages'
 			);
+
 			array_push($names, $name);
 		}
 	}

@@ -4,12 +4,10 @@ import { promiseMiddleware } from './middleware';
 
 import menus from './reducers/menus';
 import content from './reducers/content';
-import pages from './reducers/pages';
 
 const reducers = combineReducers({
 	menus,
-	content,
-	pages
+	content
 });
 
 const createStoreWithMiddleware = compose(applyMiddleware(

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import ContentBlock from '../../Utilities/ContentBlock';
-import loadPage from '../../loadPage';
 
 import './Default.css';
 
@@ -26,4 +25,4 @@ class Default extends Component {
 	}
 }
 
-export default loadPage(Default);
+export default Default;

@@ -1,17 +1,27 @@
 const defaultState = {
-	static: {}
+	data: {},
+	lists: {}
 }
 
 export default (state = defaultState, action) => {
 	switch (action.type) {
 
-		case 'LOAD_STATIC_CONTENT':
+		case 'LOAD_DATA':
 
 			return {
 				...state,
-				static: {
-					...state.static,
+				data: {
+					...state.data,
 					[action.payload[0].slug] : action.payload[0]
+				}
+			};
+
+		case 'LOAD_PAGES_LIST':
+			return {
+				...state,
+				lists: {
+					...state.lists,
+					pages: action.payload
 				}
 			};
 

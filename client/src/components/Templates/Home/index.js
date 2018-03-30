@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import ContentBlock from '../../Utilities/ContentBlock';
-import loadPage from '../../loadPage';
 
 import './Home.css';
 
@@ -25,4 +24,4 @@ class Home extends Component {
 	};
 };
 
-export default loadPage(Home);
+export default Home;

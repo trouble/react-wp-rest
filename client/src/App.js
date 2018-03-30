@@ -1,37 +1,21 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
-import Loadable from 'react-loadable';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
-
+import LoadTemplate from './components/LoadTemplate';
 import api from './api';
 
 import './scss/app.css';
 
 const mapStateToProps = (state) => ({
-	pageList: state.pages.list
+	pageList: state.content.lists.pages
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	loadPages: (list) => dispatch({ type: 'LOAD_PAGES_LIST', payload: list })
 });
-
-const AsyncHome = Loadable({
-  loader: () => import( /* webpackChunkName: "Home" */ './components/Templates/Home'),
-  loading: () => <div></div>,
-});
-
-const AsyncDefault = Loadable({
-  loader: () => import( /* webpackChunkName: "Default" */ './components/Templates/Default'),
-  loading: () => <div></div>,
-});
-
-const templates = {
-	home: AsyncHome,
-	default: AsyncDefault
-}
 
 class App extends Component {
 
@@ -54,11 +38,9 @@ class App extends Component {
 							? route.template = 'default'
 							: route.template = route.template;
 
-						const Component = templates[route.template];
-
 						return (
 							<Route
-								render={()=><Component slug={route.slug}/>}
+								render={()=><LoadTemplate template={route.template} slug={route.slug} type={route.type} />}
 								exact
 								key={i}
 								path={`/${route.path}`}
@@ -72,7 +54,7 @@ class App extends Component {
 	}
 
 	componentWillMount() {
-		this.props.loadPages(api.Pages.list());
+		this.props.loadPages(api.Content.pageList());
 	}
 
 	render() {

@@ -18,18 +18,13 @@ const Menus = {
 }
 
 const Content = {
-	static: slug => requests.get(`/wp-json/wp/v2/static-content?slug=${slug}`)
-} 
-
-const Pages = {
-	bySlug: slug =>
-		requests.get(`/wp-json/wp/v2/pages?slug=${slug}`),
-	list: () =>
+	dataBySlug: (type, slug) =>
+		requests.get(`/wp-json/wp/v2/${type}?slug=${slug}`),
+	pageList: () =>
 		requests.get('/wp-json/pages/list')
-}
+} 
 
 export default {
 	Menus,
-	Content,
-	Pages
+	Content
 }
