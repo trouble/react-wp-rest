@@ -20,7 +20,9 @@ const extractAssets = (assets, chunks) => Object.keys(assets)
 	.map(k => assets[k]);
 
 // This function removes all pages 
-// besides the page requested from the server
+// besides the page requested from the server.
+// If not done, initial response would include all pages
+// in server Redux store, and it could get huge
 const filterDataStore = (state, url) => {
 
 	// Remove leading slash from URL
@@ -32,10 +34,8 @@ const filterDataStore = (state, url) => {
 	// If multiple URL segments, trim to last one (slug)
 	slug = slug.substr(slug.lastIndexOf('/') + 1);
 
-	// If page found in state, remove all besides page in question
+	// If data found in state, remove all besides data in question
 	if (state.content.data[slug]) {
-
-		console.log('found corresponding data');
 
 		return JSON.stringify({
 			...state,
@@ -47,6 +47,7 @@ const filterDataStore = (state, url) => {
 		});
 	}
 
+	// If no matched data in store, remove all data
 	return JSON.stringify({
 		...state,
 		content: {
@@ -56,6 +57,7 @@ const filterDataStore = (state, url) => {
 }
 
 export default (store) => (req, res, next) => {
+
 	// point to HTML from CRA
 	const filePath = path.resolve(__dirname, '..', 'build', 'index.html');
 
@@ -65,10 +67,13 @@ export default (store) => (req, res, next) => {
 			return res.status(404).end();
 		}
 
+		// Init empty context necessary for StaticRouter
 		const context = {}
 
+		// Build list of modules for Loadable to preload
 		const modules = [];
 
+		// Prepare extra chunks as string of script tags to inject into HTML
 		const extraChunks = extractAssets(manifest, modules)
 			.map(c => `<script type="text/javascript" src="/${c}"></script>`);
 
@@ -82,8 +87,11 @@ export default (store) => (req, res, next) => {
 			</Loadable.Capture>
 		);
 
+		// Prevent memory leak (React Helmet docs)
 		const helmet = Helmet.renderStatic();
 
+
+		// Respond with HTML, replace necessary strings
 		return res.send(
 			htmlData.replace(
 				`<div id="root"></div>`,
