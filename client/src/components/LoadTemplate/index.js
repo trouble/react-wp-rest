@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////
-// Takes a page component and fetches its data from
-// API based on the slug prop passed.
-// Also handles loading meta data per page
+// Fetches data from API and renders template
+// based on properties passed from router.
+// Also handles loading meta data per template.
 ///////////////////////////////////////////////////////
 
 import React, { Component } from 'react';

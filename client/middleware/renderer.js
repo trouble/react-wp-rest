@@ -51,6 +51,7 @@ const filterDataStore = (state, url) => {
 	return JSON.stringify({
 		...state,
 		content: {
+			...state.content,
 			data: {}
 		}
 	});
@@ -89,7 +90,6 @@ export default (store) => (req, res, next) => {
 
 		// Prevent memory leak (React Helmet docs)
 		const helmet = Helmet.renderStatic();
-
 
 		// Respond with HTML, replace necessary strings
 		return res.send(

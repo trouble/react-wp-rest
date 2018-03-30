@@ -1,6 +1,8 @@
 const defaultState = {
 	data: {},
-	lists: {}
+	lists: {
+		pages: []
+	}
 }
 
 export default (state = defaultState, action) => {
