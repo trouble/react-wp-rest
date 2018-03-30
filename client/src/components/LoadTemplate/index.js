@@ -61,18 +61,26 @@ class LoadTemplate extends Component {
 
 		let data = this.props.data[this.slug];
 
-		let Meta = () => null;
-
-		if (data && data.acf) {
-			Meta = () => {
-				return (
-					<Helmet>
-						<title>{data.acf.metaTitle}</title>
-						<meta name="description" content={data.acf.metaDescription} />
-						<meta name="keywords" content={data.acf.metaKeywords} />
-					</Helmet>
-				)
-			}
+		const Meta = () => {
+			return (
+				<Helmet>
+					<title>
+						{ data && data.acf 
+							? data.acf.metaTitle
+							: 'Default Title' }
+					</title>
+					<meta name="description" content={
+						data && data.acf
+							? data.acf.metaDescription
+							: 'Default Description'
+					} />
+					<meta name="keywords" content={
+						data && data.acf
+							? data.acf.metaKeywords
+							: 'Default, key, word'
+					} />
+				</Helmet>
+			)
 		}
 
 		const Template = templates[this.props.template];
