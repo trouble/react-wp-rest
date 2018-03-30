@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Loadable from 'react-loadable';
 
@@ -87,4 +86,4 @@ class LoadTemplate extends Component {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoadTemplate));
+export default connect(mapStateToProps, mapDispatchToProps)(LoadTemplate);

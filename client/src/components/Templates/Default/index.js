@@ -18,10 +18,9 @@ class Default extends Component {
 					<ContentBlock content={data.content.rendered} />
 				</article>
 			);
-
-		} else {
-			return <div></div>
 		}
+
+		return null;
 	}
 }
 

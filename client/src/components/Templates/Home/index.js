@@ -18,9 +18,9 @@ class Home extends Component {
 					<ContentBlock content={data.content.rendered} />
 				</article>
 			);
-		} else {
-			return null;
 		}
+
+		return null;
 	};
 };
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 
 import Header from './components/Header';
@@ -28,10 +28,15 @@ class App extends Component {
 				return [
 					<Route
 						key="posts"
-						render={()=><LoadTemplate template="post" type="posts" />}
+						render={(props)=>
+							<LoadTemplate
+							{...props} 
+							template="post"
+							type="posts" />
+						}
 						exact
-						path="/posts/:slug"
-					/>,
+						path="/posts/:slug"/>,
+
 					routes.map((route, i) => {
 
 						// If home, set path to empty string, = '/'
@@ -46,13 +51,19 @@ class App extends Component {
 
 						return (
 							<Route
-								render={()=><LoadTemplate template={route.template} slug={route.slug} type={route.type} />}
+								render={ (props)=>
+									<LoadTemplate
+									{...props} 
+									template={route.template}
+									slug={route.slug}
+									type={route.type} />
+								}
 								exact
 								key={i}
-								path={`/${route.path}`}
-							/>
+								path={`/${route.path}`}/>
 						)
 					}),
+
 					<Route key="not-found" render={() => (<Redirect to="/not-found" />)} />
 				]
 			}
@@ -77,4 +88,4 @@ class App extends Component {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
