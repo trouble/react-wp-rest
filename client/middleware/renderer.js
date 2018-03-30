@@ -40,6 +40,7 @@ const filterDataStore = (state, url) => {
 		return JSON.stringify({
 			...state,
 			content: {
+				...state.content,
 				data: {
 					[slug]: state.content.data[slug]
 				}
