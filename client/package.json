@@ -29,7 +29,7 @@
     "start": "npm-run-all -p watch-css start-js",
     "build": "npm-run-all build-css build-js",
     "start-js": "react-scripts start",
-    "serve": "NODE_ENV=\"production\" && bootstrap",
+    "serve": "ssr-init",
     "build-js": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
