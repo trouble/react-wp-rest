@@ -1,4 +1,4 @@
-# react-wp-rest
+# Server Side Rendered / Code Split React + Wordpress REST API (WIP)
 This repo provides a boilerplate for pairing the WP Rest API with a server-side rendered and code split React client, built by [Keen](https://keen-studio.com).
 
 Wordpress, MySQL, PHP and PHPMyAdmin are all provided by Docker which makes it easy to spin up new instances of WP sites both for local development and for production on hosts like DigitalOcean.
