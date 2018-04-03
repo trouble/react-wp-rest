@@ -82,7 +82,7 @@ api/wp-comments-post.php
 api/wp-config-sample.php
 api/wp-config.php
 api/wp-cron.php
-api/wp-links-cpml.php
+api/wp-links-opml.php
 api/wp-load.php
 api/wp-login.php
 api/wp-mail.php
