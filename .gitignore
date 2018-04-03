@@ -66,3 +66,27 @@ api/wp-config.php
 
 #
 client/build
+
+
+# ignore WP 
+api/wp-admin
+api/wp-content/index.php
+api/wp-includes
+api/.htaccess
+api/index.php
+api/license.txt
+api/readme.html
+api/wp-activate.php
+api/wp-blog-header.php
+api/wp-comments-post.php
+api/wp-config-sample.php
+api/wp-config.php
+api/wp-cron.php
+api/wp-links-cpml.php
+api/wp-load.php
+api/wp-login.php
+api/wp-mail.php
+api/wp-settings.php
+api/wp-signup.php
+api/wp-trackback.php
+api/xmlrpc.php

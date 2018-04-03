@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 
+import NotFound from './components/Templates/NotFound';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import LoadTemplate from './components/LoadTemplate';
 import api from './api';
-
-import './scss/app.css';
 
 const mapStateToProps = (state) => ({
 	pageList: state.content.lists.pages
@@ -64,7 +63,7 @@ class App extends Component {
 						)
 					}),
 
-					<Route key="not-found" render={() => (<Redirect to="/not-found" />)} />
+					<Route key="not-found" component={NotFound} />
 				]
 			}
 		}
