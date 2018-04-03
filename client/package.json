@@ -1,5 +1,5 @@
 {
-  "name": "react-wp-rest",
+  "name": "react-wp-rest-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

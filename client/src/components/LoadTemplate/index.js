@@ -12,18 +12,18 @@ import Loadable from 'react-loadable';
 import api from '../../api';
 
 const AsyncHome = Loadable({
-  loader: () => import( /* webpackChunkName: "Home" */ '../Templates/Home'),
-  loading: () => <div></div>,
+	loader: () => import( /* webpackChunkName: "Home" */ '../Templates/Home'),
+	loading: () => <div></div>,
 });
 
 const AsyncDefault = Loadable({
-  loader: () => import( /* webpackChunkName: "Default" */ '../Templates/Default'),
-  loading: () => <div></div>,
+	loader: () => import( /* webpackChunkName: "Default" */ '../Templates/Default'),
+	loading: () => <div></div>,
 });
 
 const AsyncPost = Loadable({
-  loader: () => import( /* webpackChunkName: "Post" */ '../Templates/Post'),
-  loading: () => <div></div>,
+	loader: () => import( /* webpackChunkName: "Post" */ '../Templates/Post'),
+	loading: () => <div></div>,
 });
 
 const templates = {
