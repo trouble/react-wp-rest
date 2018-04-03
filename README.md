@@ -52,3 +52,18 @@ We use Redux both on the server and the client to cache the site content provide
 ## Template Usage
 
 Keen relies on Wordpress templating to tie ACF custom fields to pages as needed.  For example, a Homepage will generally require different custom fields than a typical About page.  By creating empty templates in the `/api/wp-content/themes/rest-api` folder, we can assign them to pages within Wordpress.  We then can write ACF logic to apply custom field groups to pages that use specific page templates, and then we can mirror the same template structure on the client side, but built with React.
+
+## Credits
+
+To build this repo, we've relied heavily on a few very helpful Medium posts from Andrei Duca:
+
+https://medium.com/bucharestjs/upgrading-a-create-react-app-project-to-a-ssr-code-splitting-setup-9da57df2040a
+https://medium.com/bucharestjs/adding-state-management-with-redux-in-a-cra-srr-project-9798d74dbb3b
+
+Also, we've taken inspiration from Postlight's Next.JS + Wordpress setup:
+
+https://github.com/postlight/headless-wp-starter
+
+## Questions?
+
+[Email us](mailto:info@keen-studio.com) or drop by our [website](https://keen-studio.com) and say hi through our live chat + live webcam.
