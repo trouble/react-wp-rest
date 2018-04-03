@@ -45,7 +45,7 @@ The server-side rendering configuraton in place serves the `/client/build` folde
 
 This repo comes preconfigured to support Sass.  As you can see, at Keen, we generally split out components to include their own Sass files - but you can structure your project however you'd like.
 
-## Caching API responses on the server side
+## Caching API responses on the server side using Redux
 
 We use Redux both on the server and the client to cache the site content provided by Wordpress.  This is a very simple approach but it's quite elegant in practice.  The first time a client requests a server-side rendered copy of a page, Node serves the contents of the `build` folder, without waiting for the asynchronous calls to the WP REST API.  But, this first call populates the in-memory Redux store - therefore any consecutive requests by clients to the same server-side rendered page will automatically pull from the Redux store - and will automatically populate the data from WP.
 
