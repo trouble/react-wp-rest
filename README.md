@@ -1,11 +1,7 @@
 # react-wp-rest
 This repo provides a boilerplate for pairing the WP Rest API with a server-side rendered and code split React client, built by [Keen](https://keen-studio.com).
 
-## Why not use Next.JS?  Why Wordpress?  Are you guys nuts?
-
-As far as April 2018 is concerned, Next.JS does not have great support for persisting components between routes, and in our opinion, that is a primary use case for using a frontend framework.  Persisting headers, footers, and other elements such as commonly used modals, menus and sidebars are a big boon for us - and Next.JS forces a page reload just like in the old days.  Also, we like to add in nice-to-haves such as page transitions which are difficult with full page reloads.
-
-In addition, we've come to like `react-router` and don't like the competing nature of the `next-js` SSR router vs. using the totally different client-side `react-router`.   This structure allows for the same exact routing to be used on the server and on the client.
+Wordpress, MySQL, PHP and PHPMyAdmin are all provided by Docker which makes it easy to spin up new instances of WP sites both for local development and for production on hosts like DigitalOcean.
 
 ## Getting Started
 Clone this repository locally and `cd` to the `client` folder and type `npm install`.
@@ -23,9 +19,10 @@ First, make sure you have Docker installed locally.  Once you do, `cd` to `/api`
 
 Feel free to make any other changes you'd like to the default user and database configurations but there's no real need locally.  Just don't use defaults in production.
 
-Once this is done, ensure you're still in the `api` directory and and type `docker-compose up -d`.  You can now reach your WP instance via `http://localhost:8080`. Log in and configure your installation via `http://localhost:8080/wp-admin`.
+Once this is done, ensure you're still in the `api` directory and and type `docker-compose up -d`.  You can now reach your WP instance via `http://localhost:8080`.
 
-After you're up and running, we need to perform the following steps to Wordpress:
+### Wordpress Configuration
+After you're up and running, we need to navigate to `http://localhost:8080/wp-admin` and perform the following steps to Wordpress:
 
 1. Activate the REST API theme
 2. Activate plugins ACF PRO, ACF to REST API, and WP REST API Cache
@@ -36,7 +33,7 @@ After you're up and running, we need to perform the following steps to Wordpress
 
 ### Getting to Work
 
-At this point, you can get to work. For a development workflow, we've included `create-react-app` so we can rely on all the goodness that comes with it. `cd` into `/client` and run `npm start` to get to work.  
+At this point, you can get to work. For a development workflow, we've included `create-react-app` so we can rely on all the goodness that comes with it. `cd` into `/client` and run `npm start` to get to work. 
 
 At this point, you'll see that the `not-found` template component is rendered.  This is because out of the gate, our configuration is set up in a way to match the `/` route to a `home` page slug.  Being that this is a fresh copy of Wordpress, we have not yet created a page that uses the `home` slug, so go ahead and do that now.  Add some content to the page to make sure it works, and then revisit `http://localhost:3000`.  You should now see your content being reflected.
 
