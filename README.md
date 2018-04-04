@@ -40,7 +40,7 @@ At this point, you'll see that the `not-found` template component is rendered.  
 
 ### Testing SSR
 
-The server-side rendering configuraton in place serves the `/client/build` folder on port `1337`.  The `/build` folder contains the results of `create-react-app`'s `npm run build` command - so before attempting to test SSR, make sure you first run `npm run build`. After that, run `node bootstrap` while still in the `/client` directory to fire up the server.
+The server-side rendering configuraton in place serves the `/client/build` folder on port `1337`.  The `/build` folder contains the results of `create-react-app`'s `npm run build` command - so before attempting to test SSR, make sure you first run `npm run build`. After that, run `npm run serve` while still in the `/client` directory to fire up the server.
 
 ## Sass
 
