@@ -46,13 +46,13 @@ The server-side rendering configuraton in place serves the `/client/build` folde
 
 This repo comes preconfigured to support Sass.  As you can see, at Keen, we generally split out components to include their own Sass files - but you can structure your project however you'd like.
 
-## Caching API responses on the server side using Redux
+## Caching API responses on the server side
 
-We use Redux both on the server and the client to cache the site content provided by Wordpress.  This is a very simple approach but it's quite elegant in practice.  The first time a client requests a server-side rendered copy of a page, Node serves the contents of the `build` folder, without waiting for the asynchronous calls to the WP REST API.  But, this first call populates the in-memory Redux store - therefore any consecutive requests by clients to the same server-side rendered page will automatically pull from the Redux store - and will automatically populate the data from WP.
+We use Redux both on the server and the client to cache the site content provided by Wordpress in memory.  This is a very simple approach but it works quite well in practice.  The first time a client requests a server rendered copy of a page, Node serves the contents of the `build` folder, without waiting for the asynchronous calls to the WP REST API.  But, this first call populates the in-memory Redux store - therefore any consecutive requests by clients to the same server rendered page will automatically pull from the Redux store - and will automatically populate the data from WP.
 
 ## Template Usage
 
-Keen relies on Wordpress templating to tie ACF custom fields to pages as needed.  For example, a Homepage will generally require different custom fields than a typical About page.  By creating empty templates in the `/api/wp-content/themes/rest-api` folder, we can assign them to pages within Wordpress.  We then can write ACF logic to apply custom field groups to pages that use specific page templates, and then we can mirror the same template structure on the client side, but built with React.
+Keen relies on Wordpress page templates to assign ACF custom fields to pages as needed.  For example, a Homepage will generally require different custom fields than a typical About page.  By creating empty templates in the `/api/wp-content/themes/rest-api` folder, we can assign them to pages we create within Wordpress.  We then can write ACF logic to apply custom field groups to pages that use specific page templates, and then we can mirror the same template structure on the client side, but built with React components.
 
 ## Credits
 
@@ -67,4 +67,4 @@ https://github.com/postlight/headless-wp-starter
 
 ## Questions?
 
-[Email us](mailto:info@keen-studio.com) or drop by our [website](https://keen-studio.com) and say hi through our live chat + live webcam.
+[Email us](mailto:info@keen-studio.com) or drop by our website at [keen-studio.com](https://keen-studio.com) and say hi through our live chat + live webcam.
