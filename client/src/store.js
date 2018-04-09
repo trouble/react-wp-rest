@@ -1,5 +1,4 @@
 import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
-import ReduxThunk from 'redux-thunk'
 import { promiseMiddleware } from './middleware';
 
 import menus from './reducers/menus';
@@ -11,7 +10,6 @@ const reducers = combineReducers({
 });
 
 const createStoreWithMiddleware = compose(applyMiddleware(
-	ReduxThunk,
 	promiseMiddleware
 ))(createStore);
 

@@ -8,7 +8,6 @@ class Header extends Component {
 		return (
 			<header className="header-main">
 			</header>
-
 		);
 	}
 }
