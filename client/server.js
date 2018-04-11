@@ -19,6 +19,8 @@ app.use('^/$', serverRenderer(store));
 
 app.use(express.static(path.join(__dirname, 'build')));
 
+app.use('*', serverRenderer(store));
+
 Loadable.preloadAll().then(() => {
     app.listen(port, (error) => {
         // ...
