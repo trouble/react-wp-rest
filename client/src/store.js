@@ -1,13 +1,9 @@
 import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
 import { promiseMiddleware } from './middleware';
 
-import menus from './reducers/menus';
 import content from './reducers/content';
 
-const reducers = combineReducers({
-	menus,
-	content
-});
+const reducers = combineReducers({ content });
 
 const createStoreWithMiddleware = compose(applyMiddleware(
 	promiseMiddleware

@@ -1,5 +1,6 @@
 const defaultState = {
 	data: {},
+	menus: {},
 	lists: {
 		pages: []
 	}
@@ -26,6 +27,31 @@ export default (state = defaultState, action) => {
 					pages: action.payload
 				}
 			};
+
+		case 'LOAD_MAIN_MENU':
+
+			return {
+				...state,
+				menus: {
+					main: action.payload
+				}
+			};
+
+		case 'CLEAR_API_CONTENT':
+
+			return {
+				...defaultState
+			}
+
+		case 'CLEAR_API_DATA_BY_SLUG':
+
+			if (state.data[action.payload]) {
+				let newState = { ...state};
+				delete newState.data[action.payload];
+				return newState;
+			}
+
+			return state;
 
 		default:
 			return state;

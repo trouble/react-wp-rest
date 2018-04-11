@@ -15,11 +15,44 @@ function custom_mime_types($mime_types){
 }
 add_filter('upload_mimes', 'custom_mime_types', 1, 1);
 
-// Clear REST API cache on post save
-add_action( 'save_post', function( $post_id ) {
-	if ( class_exists( 'WP_REST_Cache' ) ) {
-		WP_REST_Cache::empty_cache();
+// Add button to clear Redux store's API content to Toolbar
+add_action( 'admin_bar_menu', 'add_clear_redux_store_btn', 999 );
+
+function add_clear_redux_store_btn( $wp_admin_bar ) {
+	$args = array(
+		'id'    => 'clear_redux',
+		'title' => 'Clear WordPress Cache',
+		'href'  => get_home_url() . '/clear-redux-store?redirect=' . get_site_url() . urlencode($_SERVER['REQUEST_URI'])
+	);
+	$wp_admin_bar->add_node( $args );
+}
+
+// Provide message to admins on cache clear
+add_action('admin_notices', 'show_redux_store_cleared_msg');
+
+function show_redux_store_cleared_msg() {
+
+	// Only show this message on the admin dashboard and if asked for
+	if (!empty($_GET['redux-store-cleared'])) {
+		echo '<div class="notice notice-success"><p>The cache has been cleared successfully!</p></div>';
 	}
+}
+
+// Clear post cache on post save
+add_action( 'save_post', function( $post_id ) {
+	$post = get_post($post_id); 
+
+	// If post is being updated
+	// Note: this fixes the 'Add New' button, because we don't want to clear cache
+	// if new post.  Only if old post is updated
+    if( $post->post_modified_gmt !== $post->post_date_gmt ){
+		$slug = $post->post_name;
+
+		$redirect = get_home_url() . '/clear-redux-store' . '/' . $slug . '?redirect=' . urlencode($_SERVER['HTTP_REFERER']);
+
+		wp_redirect( $redirect );
+		exit;
+    }
 });
 
 ?>
