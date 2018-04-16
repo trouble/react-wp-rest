@@ -56,29 +56,26 @@ class LoadTemplate extends Component {
 
 	componentDidMount() {
 
+		let params = [];
+
 		// No need to run any of this on server sides
 		if (window) {
-			const params = queryString.parse(
+			params = queryString.parse(
 				window.location.search, 
 				{ ignoreQueryPrefix: true }
 			);
-
-			if (params.preview === 'true' && params['_wpnonce']) {
-
-				api.Content.previewDataBySlug(this.props.type, this.state.slug, params['_wpnonce']).then(
-					res => {
-						this.setState({ preview: res })
-					},
-					error => {
-						// TODO:
-						// Redirect to 403
-						console.warn(error);
-					}
-				);
-			}
 		}
 
-		if (!this.props.data[this.state.slug]) {
+		if (params.preview === 'true' && params['_wpnonce']) {
+			api.Content.previewDataBySlug(this.props.type, this.state.slug, params['_wpnonce']).then(
+				res => {
+					this.setState({ preview: res })
+				},
+				error => {
+					this.props.history.push('/not-found');
+				}
+			);
+		} else if (!this.props.data[this.state.slug]) {
 			// Load page content from API by slug
 			this.props.load(api.Content.dataBySlug(this.props.type, this.state.slug));
 		}
