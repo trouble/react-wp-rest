@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import Loadable from 'react-loadable';
+import queryString from 'qs';
 
 import api from '../../api';
 
@@ -45,21 +46,49 @@ class LoadTemplate extends Component {
 	constructor(props) {
 		super(props);
 
-		// Slug will either come from a prop or a URL param from React Router
-		this.slug = this.props.slug ? this.props.slug : this.props.match.params.slug;
+		// Slug will either come from a prop or a URL param from Router
+		// Necessary because some slugs come from URL params
+		this.state = {
+			preview: false,
+			slug: this.props.slug ? this.props.slug : this.props.match.params.slug
+		}
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 
-		if (!this.props.data[this.slug]) {
+		// No need to run any of this on server sides
+		if (window) {
+			const params = queryString.parse(
+				window.location.search, 
+				{ ignoreQueryPrefix: true }
+			);
+
+			if (params.preview === 'true' && params['_wpnonce']) {
+
+				api.Content.previewDataBySlug(this.props.type, this.state.slug, params['_wpnonce']).then(
+					res => {
+						this.setState({ preview: res })
+					},
+					error => {
+						// TODO:
+						// Redirect to 403
+						console.warn(error);
+					}
+				);
+			}
+		}
+
+		if (!this.props.data[this.state.slug]) {
 			// Load page content from API by slug
-			this.props.load(api.Content.dataBySlug(this.props.type, this.slug));
+			this.props.load(api.Content.dataBySlug(this.props.type, this.state.slug));
 		}
 	}
 
 	render() {
 
-		let data = this.props.data[this.slug];
+		const data = this.state.preview 
+			? this.state.preview 
+			: this.props.data[this.state.slug];
 
 		let Meta = () => null;
 
@@ -80,7 +109,7 @@ class LoadTemplate extends Component {
 		return (
 			<React.Fragment>
 				<Meta />
-				<Template data={data} slug={this.slug} />
+				<Template data={data} slug={this.state.slug} />
 			</React.Fragment>
 		);
 	}

@@ -55,4 +55,12 @@ add_action( 'save_post', function( $post_id ) {
     }
 });
 
+// Add nonce to WP preview link
+function set_headless_preview_link( $link ) {
+	return get_home_url() . '/'
+		. '?preview=true&_wpnonce='
+		. wp_create_nonce( 'wp_rest' );
+}
+add_filter( 'preview_post_link', 'set_headless_preview_link' );
+
 ?>
