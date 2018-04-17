@@ -60,13 +60,7 @@ function set_headless_preview_link( $link, $post ) {
 
 	$path = str_replace(home_url(), '', get_permalink($post));
 
-	// If post type is page, set type equal to blank string
-	$type = $post->post_type === 'page'
-		? ''
-		: '/' . $post->post_type;
-
 	return get_home_url()
-		. $type
 		. $path
 		. '?preview=true&_wpnonce='
 		. wp_create_nonce( 'wp_rest' );

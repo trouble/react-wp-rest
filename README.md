@@ -28,7 +28,7 @@ After you're up and running, we need to navigate to `http://localhost:8080/wp-ad
 2. Activate plugins ACF PRO, ACF to REST API, and WP REST API Cache
 3. Import boilerplate ACF custom fields by navigating to `Custom Fields -> Tools`, and uploading `api/acf/acf-meta.data.json`.  This will add meta fields to each Page and Post by default, avoiding the need for Yoast SEO or similar plugins.  Extend and add to other post types as you need.
 4. Update your Site Address within `Settings -> General` to your SSR app (default: http://localhost:1337)
-5. Change Permalinks to the 'Post Name' option
+5. Change Permalinks to the 'Custom Structure' option and enter `/post/%postname%/`
 
 *Note:* It's important that the Permalinks update is performed last in the order above.
 

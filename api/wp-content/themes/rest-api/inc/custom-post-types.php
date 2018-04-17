@@ -4,7 +4,6 @@ register_post_type( 'static-content', array(
 	'public' => true,
 	'has_archive' => true,
 	'menu_position' => 22, // places menu item directly below Pages
-
 	'labels' => array(
 		'name' => __( 'Static Content' ),
 		'singular_name' => __( 'Static Content' ),
@@ -17,8 +16,10 @@ register_post_type( 'static-content', array(
 		'view_item' => __( 'View Static Content' ),
 		'search_items' => __( 'Search Static Content' ),
 		'not_found' => __( 'No Static Content found in Trash' ),
-		'parent' => __( 'Parent Static Content' ),
-		'show_in_rest' => true,
+		'parent' => __( 'Parent Static Content' )
+	),
+	'rewrite'    => array (
+	    'with_front' => false
 	),
 	'supports' => array( 'title', 'editor', 'thumbnail' ),
 	'show_in_rest' => true
