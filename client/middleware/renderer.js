@@ -88,7 +88,7 @@ export default (store) => (req, res, next) => {
 				</Provider>
 			</Loadable.Capture>
 		);
-
+		
 		// Prevent memory leak (React Helmet docs)
 		const helmet = Helmet.renderStatic();
 

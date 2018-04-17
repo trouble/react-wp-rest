@@ -41,6 +41,11 @@ const mapDispatchToProps = dispatch => ({
 	load: (data) => dispatch({ type: 'LOAD_DATA', payload: data })
 });
 
+const canUseDOM = !!(
+  (typeof window !== 'undefined' &&
+  window.document && window.document.createElement)
+);
+
 class LoadTemplate extends Component {
 
 	constructor(props) {
@@ -65,11 +70,11 @@ class LoadTemplate extends Component {
 		}
 	}
 
-	componentDidMount() {
+	componentWillMount() {
 		let params = [];
 
 		// No need to run any of this on server sides
-		if (window) {
+		if (canUseDOM) {
 			params = queryString.parse(
 				window.location.search, 
 				{ ignoreQueryPrefix: true }
