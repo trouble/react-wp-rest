@@ -79,7 +79,6 @@ api/wp-content/themes/twentyeighteen
 api/wp-content/plugins/akismet/
 api/wp-content/plugins/hello.php
 api/wp-includes
-api/.htaccess
 api/index.php
 api/license.txt
 api/readme.html
