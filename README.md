@@ -29,18 +29,17 @@ After you're up and running, we need to navigate to `http://localhost:8080/wp-ad
 3. Import boilerplate ACF custom fields by navigating to `Custom Fields -> Tools`, and uploading `api/acf/acf-meta.data.json`.  This will add meta fields to each Page and Post by default, avoiding the need for Yoast SEO or similar plugins.  Extend and add to other post types as you need.
 4. Update your Site Address within `Settings -> General` to your SSR app (default: http://localhost:1337)
 5. Change Permalinks to the 'Custom Structure' option and enter `/post/%postname%/`
+6. Add a new page called `Home`, set it to use the `Home` page template, and then set it as your front page in the `Settings -> Reading -> Your homepage displays` section.
 
 *Note:* It's important that the Permalinks update is performed last in the order above.
-
-### Getting to Work
-
-At this point, you can get to work. For a development workflow, we've included `create-react-app` so we can rely on all the goodness that comes with it. `cd` into `/client` and run `npm start` to get to work. 
-
-At this point, you'll see that the `not-found` template component is rendered.  This is because out of the gate, our configuration is set up in a way to match the `/` route to a `home` page slug.  Being that this is a fresh copy of Wordpress, we have not yet created a page that uses the `home` slug, so go ahead and do that now.  Add some content to the page to make sure it works, and then revisit `http://localhost:3000`.  You should now see your content being reflected.
 
 ### Testing SSR
 
 The server-side rendering configuraton in place serves the `/client/build` folder on port `1337`.  The `/build` folder contains the results of `create-react-app`'s `npm run build` command - so before attempting to test SSR, make sure you first run `npm run build`. After that, run `npm run serve` while still in the `/client` directory to fire up the server.
+
+### Getting to Work
+
+At this point, you can get to work. For a development workflow, we've included `create-react-app` so we can rely on all the goodness that comes with it. `cd` into `/client` and run `npm start` to get to work. 
 
 ## Sass
 
