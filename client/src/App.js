@@ -31,10 +31,10 @@ class App extends Component {
 							<LoadTemplate
 							{...props} 
 							template="post"
-							type="posts" />
+							type="post" />
 						}
 						exact
-						path="/posts/:slug"/>,
+						path="/post/:slug"/>,
 
 					routes.map((route, i) => {
 

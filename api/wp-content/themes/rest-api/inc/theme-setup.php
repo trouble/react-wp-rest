@@ -56,11 +56,21 @@ add_action( 'save_post', function( $post_id ) {
 });
 
 // Add nonce to WP preview link
-function set_headless_preview_link( $link ) {
-	return get_home_url() . '/'
+function set_headless_preview_link( $link, $post ) {
+
+	$path = str_replace(home_url(), '', get_permalink($post));
+
+	// If post type is page, set type equal to blank string
+	$type = $post->post_type === 'page'
+		? ''
+		: '/' . $post->post_type;
+
+	return get_home_url()
+		. $type
+		. $path
 		. '?preview=true&_wpnonce='
 		. wp_create_nonce( 'wp_rest' );
 }
-add_filter( 'preview_post_link', 'set_headless_preview_link' );
+add_filter( 'preview_post_link', 'set_headless_preview_link', 10, 2 );
 
 ?>

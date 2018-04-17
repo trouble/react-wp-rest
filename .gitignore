@@ -71,6 +71,7 @@ client/build
 # ignore WP 
 api/wp-admin
 api/wp-content/index.php
+api/wp-content/debug.log
 api/wp-includes
 api/.htaccess
 api/index.php

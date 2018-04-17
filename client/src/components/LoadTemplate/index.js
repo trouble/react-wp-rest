@@ -46,16 +46,26 @@ class LoadTemplate extends Component {
 	constructor(props) {
 		super(props);
 
-		// Slug will either come from a prop or a URL param from Router
-		// Necessary because some slugs come from URL params
 		this.state = {
 			preview: false,
-			slug: this.props.slug ? this.props.slug : this.props.match.params.slug
+
+			// Slug will either come from a prop or a URL param from Router
+			// Necessary because some slugs come from URL params
+			slug: this.props.slug 
+				? this.props.slug 
+				: this.props.match.params.slug,
+
+			// Default WP REST API expects /pages/ and /posts/ formatting
+			// Custom post types are all singular (sigh)
+			fetchType: this.props.type === 'page' 
+				? 'pages'
+				: this.props.type === 'post' 
+				? 'posts'
+				: this.props.type
 		}
 	}
 
 	componentDidMount() {
-
 		let params = [];
 
 		// No need to run any of this on server sides
@@ -67,17 +77,18 @@ class LoadTemplate extends Component {
 		}
 
 		if (params.preview === 'true' && params['_wpnonce']) {
-			api.Content.previewDataBySlug(this.props.type, this.state.slug, params['_wpnonce']).then(
+			api.Content.previewDataBySlug( this.props.type, this.state.slug, params['_wpnonce']).then(
 				res => {
 					this.setState({ preview: res })
 				},
 				error => {
+					console.warn(error);
 					this.props.history.push('/not-found');
 				}
 			);
 		} else if (!this.props.data[this.state.slug]) {
 			// Load page content from API by slug
-			this.props.load(api.Content.dataBySlug(this.props.type, this.state.slug));
+			this.props.load(api.Content.dataBySlug(this.state.fetchType, this.state.slug));
 		}
 	}
 

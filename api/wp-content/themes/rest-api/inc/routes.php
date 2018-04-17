@@ -23,7 +23,7 @@ function react_wp_rest_get_page_routes() {
 				'path' => get_page_uri($page->ID),
 				'slug' => $page->post_name,
 				'template' => $template,
-				'type' => 'pages'
+				'type' => 'page'
 			);
 
 			array_push($names, $name);
@@ -39,7 +39,8 @@ function react_wp_rest_get_page_routes() {
 
 function react_wp_rest_get_preview_data(WP_REST_Request $request) {
 
-	$post = get_page_by_path($request->get_param('slug'));
+	$post = get_post_by_slug($request->get_param('slug'));
+
 	$post_id = $post->ID;
 
 	// Revisions are drafts so here we remove the default 'publish' status

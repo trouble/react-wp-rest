@@ -1,5 +1,8 @@
 <?php
 
+// Helper utilities
+require_once('inc/utilities.php');
+
 // Enable CORS from client
 require_once('inc/cors.php');
 
