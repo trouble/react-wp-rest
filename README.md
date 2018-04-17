@@ -10,7 +10,9 @@ Clone this repository locally and `cd` to the `client` folder and type `npm inst
 The React app relies on an `.env` file to configure itself to its environment, and this repo ships with an example that you can copy and rename.  To do so, make sure you're still in the `/client` directory, and then duplicate / rename `.env.example` by running `cp .env.example .env`.  The example `.env` file comes preloaded with the URL to the default Docker installation of Wordpress.
 
 ### Docker
-First, make sure you have Docker installed locally.  Once you do, `cd` to `/api` to duplicate and rename `docker-compose.yml.example` by running `cp docker-compose.yml.example docker-compose.yml`.  Now we need to edit `api/docker-compose.yml` to link your local filesystem with Docker's Wordpress files.  To do so, open up our newly duplicated `docker-compose.yml` and change the following to match your local install directory:
+First, make sure you have Docker installed locally.  Once you do, `cd` to `/api` to duplicate and rename `docker-compose.yml.example` by running `cp docker-compose.yml.example docker-compose.yml`.  Now we need to edit `api/docker-compose.yml` to link your local filesystem with Docker's Wordpress files.  To do so, open up our newly duplicated `docker-compose.yml` and change the following to match your local install directory.  
+
+**NOTE:** You only need to change the path located _before_ the colon. In this case, replace `~/www/react-wp-rest` with your install directory.
 
 ````
   volumes: 
@@ -25,7 +27,7 @@ Once this is done, ensure you're still in the `api` directory and and type `dock
 After you're up and running, we need to navigate to `http://localhost:8080/wp-admin` and perform the following steps to Wordpress:
 
 1. Activate the REST API theme
-2. Activate plugins ACF PRO, ACF to REST API, and WP REST API Cache
+2. Activate plugins ACF PRO and ACF to REST API.
 3. Import boilerplate ACF custom fields by navigating to `Custom Fields -> Tools`, and uploading `api/acf/acf-meta.data.json`.  This will add meta fields to each Page and Post by default, avoiding the need for Yoast SEO or similar plugins.  Extend and add to other post types as you need.
 4. Update your Site Address within `Settings -> General` to your SSR app (default: http://localhost:1337)
 5. Change Permalinks to the 'Custom Structure' option and enter `/post/%postname%/`

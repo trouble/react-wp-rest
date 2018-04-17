@@ -72,6 +72,12 @@ client/build
 api/wp-admin
 api/wp-content/index.php
 api/wp-content/debug.log
+api/wp-content/themes/twentyfifteen
+api/wp-content/themes/twentysixteen
+api/wp-content/themes/twentyseventeen
+api/wp-content/themes/twentyeighteen
+api/wp-content/plugins/akismet/
+api/wp-content/plugins/hello.php
 api/wp-includes
 api/.htaccess
 api/index.php
