@@ -9,7 +9,9 @@ const responseBody = res => res.body;
 
 const requests = {
 	get: url =>
-		superagent.get(`${API_ROOT}${url}`).then( responseBody )
+		superagent.get(`${API_ROOT}${url}`).then( responseBody ),
+	getWithCredentials: url =>
+		superagent.get(`${API_ROOT}${url}`).withCredentials().then( responseBody )
 }
 
 const Menus = {
@@ -20,8 +22,10 @@ const Menus = {
 const Content = {
 	dataBySlug: (type, slug) =>
 		requests.get(`/wp-json/wp/v2/${type}?slug=${slug}`),
+	previewDataBySlug: (type, slug, wpnonce) =>
+		requests.getWithCredentials(`/wp-json/react-wp-rest/preview?type=${type}&slug=${slug}&_wpnonce=${wpnonce}`),
 	pageList: () =>
-		requests.get('/wp-json/pages/list')
+		requests.get('/wp-json/react-wp-rest/pages/list')
 } 
 
 export default {

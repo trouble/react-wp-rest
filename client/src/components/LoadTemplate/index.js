@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import Loadable from 'react-loadable';
+import queryString from 'qs';
 
 import api from '../../api';
 
@@ -40,26 +41,67 @@ const mapDispatchToProps = dispatch => ({
 	load: (data) => dispatch({ type: 'LOAD_DATA', payload: data })
 });
 
+const canUseDOM = !!(
+  (typeof window !== 'undefined' &&
+  window.document && window.document.createElement)
+);
+
 class LoadTemplate extends Component {
 
 	constructor(props) {
 		super(props);
 
-		// Slug will either come from a prop or a URL param from React Router
-		this.slug = this.props.slug ? this.props.slug : this.props.match.params.slug;
+		this.state = {
+			preview: false,
+
+			// Slug will either come from a prop or a URL param from Router
+			// Necessary because some slugs come from URL params
+			slug: this.props.slug 
+				? this.props.slug 
+				: this.props.match.params.slug,
+
+			// Default WP REST API expects /pages/ and /posts/ formatting
+			// Custom post types are all singular (sigh)
+			fetchType: this.props.type === 'page' 
+				? 'pages'
+				: this.props.type === 'post' 
+				? 'posts'
+				: this.props.type
+		}
 	}
 
 	componentWillMount() {
+		let params = [];
 
-		if (!this.props.data[this.slug]) {
+		// No need to run any of this on server sides
+		if (canUseDOM) {
+			params = queryString.parse(
+				window.location.search, 
+				{ ignoreQueryPrefix: true }
+			);
+		}
+
+		if (params.preview === 'true' && params['_wpnonce']) {
+			api.Content.previewDataBySlug( this.props.type, this.state.slug, params['_wpnonce']).then(
+				res => {
+					this.setState({ preview: res })
+				},
+				error => {
+					console.warn(error);
+					this.props.history.push('/not-found');
+				}
+			);
+		} else if (!this.props.data[this.state.slug]) {
 			// Load page content from API by slug
-			this.props.load(api.Content.dataBySlug(this.props.type, this.slug));
+			this.props.load(api.Content.dataBySlug(this.state.fetchType, this.state.slug));
 		}
 	}
 
 	render() {
 
-		let data = this.props.data[this.slug];
+		const data = this.state.preview 
+			? this.state.preview 
+			: this.props.data[this.state.slug];
 
 		let Meta = () => null;
 
@@ -80,7 +122,7 @@ class LoadTemplate extends Component {
 		return (
 			<React.Fragment>
 				<Meta />
-				<Template data={data} slug={this.slug} />
+				<Template data={data} slug={this.state.slug} />
 			</React.Fragment>
 		);
 	}

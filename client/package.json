@@ -10,6 +10,7 @@
     "ignore-styles": "^5.0.1",
     "node-sass-chokidar": "^1.1.2",
     "npm-run-all": "^4.1.2",
+    "qs": "^6.5.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
