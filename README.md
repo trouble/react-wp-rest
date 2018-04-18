@@ -15,13 +15,13 @@ First, make sure you have Docker installed locally.  Once you do, `cd` to `/api`
 **NOTE:** You only need to change the path located _before_ the colon. In this case, replace `~/www/react-wp-rest` with your install directory.
 
 ````
-  volumes: 
+  volumes:
     - ~/www/react-wp-rest/api:/var/www/html
 ````
 
 Feel free to make any other changes you'd like to the default user and database configurations but there's no real need locally.  Just don't use defaults in production.
 
-Once this is done, ensure you're still in the `api` directory and and type `docker-compose up -d`.  You can now reach your WP instance via `http://localhost:8080`.
+Next, fire up Docker if it isn't already. Once this is done, ensure you're still in the `api` directory and and type `docker-compose up -d`.  You can now reach your WP instance via `http://localhost:8080`.
 
 ### Wordpress Configuration
 After you're up and running, we need to navigate to `http://localhost:8080/wp-admin` and perform the following steps to Wordpress:
@@ -41,7 +41,7 @@ The server-side rendering configuraton in place serves the `/client/build` folde
 
 ### Getting to Work
 
-At this point, you can get to work. For a development workflow, we've included `create-react-app` so we can rely on all the goodness that comes with it. `cd` into `/client` and run `npm start` to get to work. 
+At this point, you can get to work. For a development workflow, we've included `create-react-app` so we can rely on all the goodness that comes with it. `cd` into `/client` and run `npm start` to get to work.
 
 ## Sass
 
