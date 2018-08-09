@@ -29,11 +29,11 @@ After you're up and running, we need to navigate to `http://localhost:8080/wp-ad
 1. Activate the REST API theme
 2. Activate plugins ACF PRO and ACF to REST API
 3. Import boilerplate ACF custom fields by navigating to `Custom Fields -> Tools`, and uploading `api/acf/acf-meta.data.json`.  This will add meta fields to each Page and Post by default, avoiding the need for Yoast SEO or similar plugins.  Extend and add to other post types as you need
-4. Update your Site Address within `Settings -> General` to your SSR app (default: http://localhost:1337)
-5. Add a new page called `Home`, set it to use the `Home` page template, and then set it as your front page in the `Settings -> Reading -> Your homepage displays` section
-6. Change Permalinks to the 'Custom Structure' option and enter `/post/%postname%/`
+4. Add a new page called `Home`, set it to use the `Home` page template, and then set it as your front page in the `Settings -> Reading -> Your homepage displays` section
+5. Change Permalinks to the 'Custom Structure' option and enter `/post/%postname%/`
+6. Update your Site Address within `Settings -> General` to your SSR app (default: http://localhost:1337)
 
-*Note:* It's important that the Permalinks update is performed last in the order above.
+*Note:* It's important that the Site Address update is performed last in the order above.
 
 ### Booting up the SSR app
 
