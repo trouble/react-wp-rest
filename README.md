@@ -19,7 +19,9 @@ First, make sure you have Docker installed locally.  Once you do, `cd` to `/api`
     - ~/www/react-wp-rest/api:/var/www/html
 ````
 
-Feel free to make any other changes you'd like to the default user and database configurations but there's no real need locally.  Just don't use defaults in production.
+You may want to also swap all ex_ prefixes for your project's abbreviation to avoid using the same container across multiple projects.
+
+Feel free to make any other changes you'd like to the default user and database configurations but there's no real need locally. Just don't use defaults in production.
 
 Next, fire up Docker if it isn't already. Once this is done, ensure you're still in the `api` directory and and type `docker-compose up -d`.  You can now reach your WP instance via `http://localhost:8080`.
 
