@@ -33,6 +33,7 @@ export default (state = defaultState, action) => {
 			return {
 				...state,
 				menus: {
+					...state.menus,
 					[action.payload.slug] : action.payload.menu
 				}
 			};
