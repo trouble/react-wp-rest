@@ -10,20 +10,20 @@ import { Helmet } from 'react-helmet';
 import Loadable from 'react-loadable';
 import queryString from 'qs';
 
-import api from '../../api';
+import api from '../../../api';
 
 const AsyncHome = Loadable({
-	loader: () => import( /* webpackChunkName: "Home" */ '../Templates/Home'),
+	loader: () => import( /* webpackChunkName: "Home" */ '../Home'),
 	loading: () => <div></div>,
 });
 
 const AsyncDefault = Loadable({
-	loader: () => import( /* webpackChunkName: "Default" */ '../Templates/Default'),
+	loader: () => import( /* webpackChunkName: "Default" */ '../Default'),
 	loading: () => <div></div>,
 });
 
 const AsyncPost = Loadable({
-	loader: () => import( /* webpackChunkName: "Post" */ '../Templates/Post'),
+	loader: () => import( /* webpackChunkName: "Post" */ '../Post'),
 	loading: () => <div></div>,
 });
 

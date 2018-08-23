@@ -28,12 +28,12 @@ export default (state = defaultState, action) => {
 				}
 			};
 
-		case 'LOAD_MAIN_MENU':
+		case 'LOAD_MENU':
 
 			return {
 				...state,
 				menus: {
-					main: action.payload
+					[action.payload.slug] : action.payload.menu
 				}
 			};
 

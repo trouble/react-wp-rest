@@ -39,7 +39,7 @@ function show_redux_store_cleared_msg() {
 }
 
 // Clear post cache on post save
-add_action( 'save_post', function( $post_id ) {
+add_action( 'post_updated', function( $post_id ) {
 	$post = get_post($post_id); 
 
 	// If post is being updated
@@ -51,7 +51,6 @@ add_action( 'save_post', function( $post_id ) {
 		$redirect = get_home_url() . '/clear-redux-store' . '/' . $slug . '?redirect=' . urlencode($_SERVER['HTTP_REFERER']);
 
 		wp_redirect( $redirect );
-		exit;
     }
 });
 

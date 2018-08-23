@@ -1,9 +1,8 @@
 <?php
 
-function get_main_menu() {
-	# Change 'menu' to your own navigation slug.
+function react_wp_rest_get_menu($data) {
 
-	$menu_items = wp_get_nav_menu_items('main');
+	$menu_items = wp_get_nav_menu_items($data['slug']);
 	
 	foreach ($menu_items as $item) {
 
@@ -15,13 +14,16 @@ function get_main_menu() {
 		}
 	}
 
-	return $menu_items;
+	return array(
+		'slug' => $data['slug'],
+		'menu' => $menu_items
+	);
 }
 
 add_action( 'rest_api_init', function () {
-		register_rest_route( 'menus', '/main', array(
-		'methods' => 'GET',
-		'callback' => 'get_main_menu',
+	register_rest_route( 'react-wp-rest', 'menus/(?P<slug>[a-zA-Z0-9-]+)', array(
+		'methods'  => 'GET',
+		'callback' => 'react_wp_rest_get_menu'
 	) );
 } );
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import ContentBlock from '../../Utilities/ContentBlock';
+import ContentBlock from '../../utilities/ContentBlock';
 
-import './Default.css';
+import './index.css';
 
 class Default extends Component {
 

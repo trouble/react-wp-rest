@@ -15,8 +15,8 @@ const requests = {
 }
 
 const Menus = {
-	main: () =>
-		requests.get('/wp-json/menus/main')
+	bySlug: (slug) => 
+		requests.get(`/wp-json/react-wp-rest/menus/${slug}`)
 }
 
 const Content = {
