@@ -3,21 +3,25 @@
 function react_wp_rest_get_menu($data) {
 
 	$menu_items = wp_get_nav_menu_items($data['slug']);
-	
-	foreach ($menu_items as $item) {
 
-		if ($item->object === 'page') {
-			$post = get_post($item->object_id); 
-			$slug = $post->post_name;
+	if ($menu_items) {
+		foreach ($menu_items as $item) {
 
-			$item->url = '/' . $slug;
+			if ($item->object === 'page') {
+				$post = get_post($item->object_id); 
+				$slug = $post->post_name;
+
+				$item->url = '/' . $slug;
+			}
 		}
+
+		return array(
+			'slug' => $data['slug'],
+			'menu' => $menu_items
+		);
 	}
 
-	return array(
-		'slug' => $data['slug'],
-		'menu' => $menu_items
-	);
+	return array();
 }
 
 add_action( 'rest_api_init', function () {
