@@ -26,7 +26,7 @@
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "start": "npm-run-all -p watch-css start-js",
+    "start": "npm-run-all -p serve watch-css start-js",
     "build": "npm-run-all build-css build-js",
     "start-js": "react-scripts start",
     "serve": "node ssr-init",
