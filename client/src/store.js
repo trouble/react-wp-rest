@@ -1,9 +1,9 @@
 import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
 import { promiseMiddleware } from './middleware';
 
-import content from './reducers/content';
+import api from './reducers/api';
 
-const reducers = combineReducers({ content });
+const reducers = combineReducers({ api });
 
 const composeEnhancers = ((typeof window !== 'undefined') && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 

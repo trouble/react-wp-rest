@@ -6,6 +6,8 @@ import manifest from '../build/asset-manifest.json';
 import { Provider } from 'react-redux';
 import { StaticRouter as Router } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
+import postTypes from '../src/post-types';
+import { arrayToObject } from '../src/utilities/convertData';
 
 import api from '../src/api';
 import App from '../src/App';
@@ -31,18 +33,30 @@ const filterDataStore = (state, url) => {
 	// If no slug, assume homepage
 	slug = slug.length === 0 ? 'home' : slug;
 
+	// Store URL segments
+	let segments = slug.split('/');
+
 	// If multiple URL segments, trim to last one (slug)
 	slug = slug.substr(slug.lastIndexOf('/') + 1);
 
+	// If more than 1 URL segment, set type equal to first segment
+	// If no match from postTypes, set default of pages
+	let type = postTypes.indexOf(segments[0]) > -1
+		? postTypes[postTypes.indexOf(segments[0])]
+		: 'pages';
+
 	// If data found in state, remove all besides data in question
-	if (state.content.data[slug]) {
+	if (state.api.data[type][slug]) {
 
 		return JSON.stringify({
 			...state,
-			content: {
-				...state.content,
+			api: {
+				...state.api,
 				data: {
-					[slug]: state.content.data[slug]
+					...arrayToObject(postTypes),
+					[type]: {
+						[slug]: state.api.data[type][slug]
+					}
 				}
 			}
 		});
@@ -51,9 +65,11 @@ const filterDataStore = (state, url) => {
 	// If no matched data in store, remove all data
 	return JSON.stringify({
 		...state,
-		content: {
-			...state.content,
-			data: {}
+		api: {
+			...state.api,
+			data: {
+				...arrayToObject(postTypes)
+			}
 		}
 	});
 }

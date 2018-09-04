@@ -6,26 +6,23 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import Loadable from 'react-loadable';
 import queryString from 'qs';
 
+import AsyncChunks from '../../utilities/AsyncLoader';
+import canUseDom from '../../../utilities/canUseDom';
+import Footer from '../../layout/Footer';
 import api from '../../../api';
 
-const AsyncHome = Loadable({
-	loader: () => import( /* webpackChunkName: "Home" */ '../Home'),
-	loading: () => <div></div>,
-});
+const AsyncDefault = AsyncChunks.generateChunk(() => 
+	import( /* webpackChunkName: "Default" */ '../Default'));
 
-const AsyncDefault = Loadable({
-	loader: () => import( /* webpackChunkName: "Default" */ '../Default'),
-	loading: () => <div></div>,
-});
+const AsyncHome = AsyncChunks.generateChunk(() => 
+	import( /* webpackChunkName: "Home" */ '../Home'));
 
-const AsyncPost = Loadable({
-	loader: () => import( /* webpackChunkName: "Post" */ '../Post'),
-	loading: () => <div></div>,
-});
+const AsyncPost = AsyncChunks.generateChunk(() => 
+	import( /* webpackChunkName: "Post" */ '../Post'));
 
 const templates = {
 	home: AsyncHome,
@@ -34,17 +31,12 @@ const templates = {
 }
 
 const mapStateToProps = state => ({
-	data: state.content.data
+	data: state.api.data
 });
 
 const mapDispatchToProps = dispatch => ({
 	load: (data) => dispatch({ type: 'LOAD_DATA', payload: data })
 });
-
-const canUseDOM = !!(
-  (typeof window !== 'undefined' &&
-  window.document && window.document.createElement)
-);
 
 class LoadTemplate extends Component {
 
@@ -58,54 +50,80 @@ class LoadTemplate extends Component {
 			// Necessary because some slugs come from URL params
 			slug: this.props.slug 
 				? this.props.slug 
-				: this.props.match.params.slug,
+				: this.props.match.params.slug
+		}
 
-			// Default WP REST API expects /pages/ and /posts/ formatting
-			// Custom post types are all singular (sigh)
-			fetchType: this.props.type === 'page' 
-				? 'pages'
-				: this.props.type === 'post' 
-				? 'posts'
-				: this.props.type
+		this.fetchData();
+	}
+
+	checkForPreview() {
+		if (canUseDom) {
+			let params = [];
+
+			params = queryString.parse(
+				window.location.search,
+				{ ignoreQueryPrefix: true }
+			);
+
+			if (params.preview === 'true' && params['_wpnonce']) {
+				api.Content.previewDataBySlug( this.props.type, this.state.slug, params['_wpnonce']).then(
+					res => {
+						this.setState({ preview: res })
+					},
+					error => {
+						console.warn(error);
+						this.props.history.push('/not-found');
+					}
+				);
+			} 
 		}
 	}
 
-	componentWillMount() {
-		let params = [];
-
-		// No need to run any of this on server sides
-		if (canUseDOM) {
-			params = queryString.parse(
-				window.location.search, 
-				{ ignoreQueryPrefix: true }
-			);
-		}
-
-		if (params.preview === 'true' && params['_wpnonce']) {
-			api.Content.previewDataBySlug( this.props.type, this.state.slug, params['_wpnonce']).then(
+	fetchData() {
+		if (!this.props.data[this.props.type][this.state.slug]) {
+			// Load page content from API by slug
+			api.Content.dataBySlug(this.props.type, this.state.slug).then(
 				res => {
-					this.setState({ preview: res })
+					this.props.load({
+						type: this.props.type,
+						slug: this.state.slug,
+						data: res
+					})
 				},
 				error => {
 					console.warn(error);
-					this.props.history.push('/not-found');
 				}
 			);
-		} else if (!this.props.data[this.state.slug]) {
-			// Load page content from API by slug
-			this.props.load(api.Content.dataBySlug(this.state.fetchType, this.state.slug));
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.match.params.slug !== this.props.match.params.slug) {
+			this.setState({
+				slug: this.props.match.params.slug
+			})
 		}
 	}
 
 	render() {
 
-		const data = this.state.preview 
-			? this.state.preview 
-			: this.props.data[this.state.slug];
+		this.checkForPreview();
+
+		let data = this.state.preview;
+		
+		if (!this.state.preview && this.props.data[this.props.type] && this.props.data[this.props.type][this.state.slug]) {
+			data = this.props.data[this.props.type][this.state.slug];
+		}
 
 		let Meta = () => null;
 
-		if (data && data.acf) {
+		const Template = templates[this.props.template];
+
+		if (!Template) {
+			return <Redirect to="/not-found"/>;
+		}
+
+		if (data) {
 			Meta = () => {
 				return (
 					<Helmet>
@@ -115,16 +133,17 @@ class LoadTemplate extends Component {
 					</Helmet>
 				)
 			}
+
+			return (
+				<div className="template-wrap">
+					<Meta />
+					<Template data={data} slug={this.state.slug} />
+					<Footer />
+				</div>
+			);
 		}
 
-		const Template = templates[this.props.template];
-
-		return (
-			<React.Fragment>
-				<Meta />
-				<Template data={data} slug={this.state.slug} />
-			</React.Fragment>
-		);
+		return null;
 	}
 }
 

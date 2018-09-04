@@ -7,7 +7,7 @@ import api from '../../../api';
 import './index.css';
 
 const mapStateToProps = (state) => ({
-	mainMenu: state.content.menus.main
+	mainMenu: state.api.menus.main
 });
 
 const mapDispatchToProps = (dispatch) => ({

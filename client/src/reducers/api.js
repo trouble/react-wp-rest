@@ -1,5 +1,12 @@
+import { arrayToObject } from '../utilities/convertData';
+import postTypes from '../post-types';
+
+const postTypeDefaultState = arrayToObject(postTypes);
+
 const defaultState = {
-	data: {},
+	data: {
+		...postTypeDefaultState
+	},
 	menus: {},
 	lists: {
 		pages: []
@@ -15,7 +22,20 @@ export default (state = defaultState, action) => {
 				...state,
 				data: {
 					...state.data,
-					[action.payload[0].slug] : action.payload[0]
+					[action.payload.type]: arrayToObject(action.payload.data, 'slug')
+				}
+			}
+
+		case 'LOAD_DATA_BY_SLUG':
+
+			return {
+				...state,
+				data: {
+					...state.data,
+					[action.payload.type]: {
+						...state.data[action.payload.type],
+						[action.payload.slug]: action.payload.data[0]
+					}
 				}
 			};
 

@@ -20,10 +20,12 @@ const Menus = {
 }
 
 const Content = {
+	data: type =>
+		requests.get(`/wp-json/wp/v2/${type}?_embed`),
 	dataBySlug: (type, slug) =>
-		requests.get(`/wp-json/wp/v2/${type}?slug=${slug}`),
+		requests.get(`/wp-json/wp/v2/${type}?slug=${slug}&_embed`),
 	previewDataBySlug: (type, slug, wpnonce) =>
-		requests.getWithCredentials(`/wp-json/react-wp-rest/preview?type=${type}&slug=${slug}&_wpnonce=${wpnonce}`),
+		requests.getWithCredentials(`/wp-json/react-wp-rest/preview?type=${type}&slug=${slug}&_wpnonce=${wpnonce}&_embed`),
 	pageList: () =>
 		requests.get('/wp-json/react-wp-rest/pages/list')
 } 
