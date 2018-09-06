@@ -12,8 +12,9 @@ const app = express();
 const path = require('path');
 const port = 1337;
 
+app.get('/clear-redux-store/:type/:slug', clearReduxStore.bySlug(store));
+
 app.get('/clear-redux-store', clearReduxStore.all(store));
-app.get('/clear-redux-store/:slug', clearReduxStore.bySlug(store));
 
 app.use('^/$', serverRenderer(store));
 

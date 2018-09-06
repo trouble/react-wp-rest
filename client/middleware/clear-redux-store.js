@@ -11,7 +11,21 @@ export default {
 		res.redirect(`${req.query.redirect}${clearedParam}`);
 	},
 	bySlug: (store) => (req, res, next) => {
-		store.dispatch({ type: 'CLEAR_API_DATA_BY_SLUG', payload: req.params.slug })
-		res.redirect(`${req.query.redirect}`);
+		let type = req.params.type;
+
+		// Normalize type to match Redux store on server
+		if (type === 'page') {
+			type = 'pages';
+		}
+
+		if (type === 'post') {
+			type = 'posts'
+		};
+
+		store.dispatch({ type: 'CLEAR_API_DATA_BY_SLUG', payload: {
+			type: type,
+			slug: req.params.slug
+		} })
+		res.sendStatus(200);
 	}
 }
