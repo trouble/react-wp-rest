@@ -30,7 +30,7 @@ class App extends Component {
 						key="posts"
 						render={(props)=>
 							<LoadTemplate
-							{...props} 
+							{...props}
 							template="post"
 							type="post" />
 						}
@@ -40,12 +40,12 @@ class App extends Component {
 					pages.map((route, i) => {
 
 						// If home, set path to empty string, = '/'
-						route.slug === 'home' 
+						route.slug === 'home'
 							? route.path = ''
 							: route.path = route.path;
 
 						// If template is blank, set to default
-						route.template === '' 
+						route.template === ''
 							? route.template = 'default'
 							: route.template = route.template;
 
@@ -61,14 +61,14 @@ class App extends Component {
 							<Route
 								render={ (props)=>
 									<LoadTemplate
-									{...props} 
+									{...props}
 									template={route.template}
 									slug={route.slug}
 									type={route.type} />
 								}
 								exact
 								key={i}
-								path={`/${route.path}`}/>
+								path={`/${decodeURIComponent(route.path)}`}/>
 						)
 					}),
 
