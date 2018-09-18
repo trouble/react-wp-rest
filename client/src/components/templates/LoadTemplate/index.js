@@ -35,7 +35,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	load: (data) => dispatch({ type: 'LOAD_DATA', payload: data })
+	load: (data) => dispatch({ type: 'LOAD_DATA_BY_SLUG', payload: data })
 });
 
 class LoadTemplate extends Component {
@@ -133,17 +133,15 @@ class LoadTemplate extends Component {
 					</Helmet>
 				)
 			}
-
-			return (
-				<div className="template-wrap">
-					<Meta />
-					<Template data={data} slug={this.state.slug} />
-					<Footer />
-				</div>
-			);
 		}
 
-		return null;
+		return (
+			<div className="template-wrap">
+				<Meta />
+				<Template data={data} slug={this.state.slug} />
+				<Footer />
+			</div>
+		);
 	}
 }
 
