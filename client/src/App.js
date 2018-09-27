@@ -78,7 +78,7 @@ class App extends Component {
 		}
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.loadPages(api.Content.pageList());
 
 		// Over-eager load code split chunks
