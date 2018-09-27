@@ -40,14 +40,14 @@ class App extends Component {
 					pages.map((route, i) => {
 
 						// If home, set path to empty string, = '/'
-						route.slug === 'home'
-							? route.path = ''
-							: route.path = route.path;
+						if (route.slug === 'home') {
+							route.path = '';
+						}
 
 						// If template is blank, set to default
-						route.template === ''
-							? route.template = 'default'
-							: route.template = route.template;
+						if (route.template === '') {
+							route.template = 'default'
+						}
 
 						// Default WP REST API expects /pages/ and /posts/ formatting
 						// Custom post types are all singular (sigh)
