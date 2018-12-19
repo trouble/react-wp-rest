@@ -12,6 +12,12 @@ require_once('inc/menus.php');
 // Register endpoints to provide client routes
 require_once('inc/routes.php');
 
+// Enable React preview
+require_once('inc/preview.php');
+
+// Cache clearing
+require_once('inc/cache.php');
+
 // Register menu endpoints
 require_once('inc/custom-post-types.php');
 

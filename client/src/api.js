@@ -26,6 +26,8 @@ const Content = {
 		requests.get(`/wp-json/wp/v2/${type}?slug=${slug}&_embed`),
 	previewDataBySlug: (type, slug, wpnonce) =>
 		requests.getWithCredentials(`/wp-json/react-wp-rest/preview?type=${type}&slug=${slug}&_wpnonce=${wpnonce}&_embed`),
+	previewDataById: (type, id, wpnonce) =>
+		requests.getWithCredentials(`/wp-json/react-wp-rest/preview?type=${type}&id=${id}&_wpnonce=${wpnonce}&status=draft&_embed`),
 	pageList: () =>
 		requests.get('/wp-json/react-wp-rest/pages/list')
 } 

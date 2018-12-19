@@ -45,6 +45,7 @@ class LoadTemplate extends Component {
 
 		this.state = {
 			preview: false,
+			template: this.props.template ? this.props.template : 'default',
 
 			// Slug will either come from a prop or a URL param from Router
 			// Necessary because some slugs come from URL params
@@ -65,17 +66,29 @@ class LoadTemplate extends Component {
 				{ ignoreQueryPrefix: true }
 			);
 
-			if (params.preview === 'true' && params['_wpnonce']) {
-				api.Content.previewDataBySlug( this.props.type, this.state.slug, params['_wpnonce']).then(
-					res => {
-						this.setState({ preview: res })
-					},
-					error => {
-						console.warn(error);
-						this.props.history.push('/not-found');
-					}
-				);
-			} 
+			if (params.preview === 'true' && params._wpnonce && this.state.preview === false) {
+				if (params.id) {
+					api.Content.previewDataById( this.props.type, params.id, params._wpnonce).then(
+						res => {
+							this.setState({ preview: res });
+						},
+						error => {
+							console.warn(error);
+							this.props.history.push('/not-found');
+						}
+					);
+				} else {
+					api.Content.previewDataBySlug( this.props.type, this.state.slug, params._wpnonce).then(
+						res => {
+							this.setState({ preview: res })
+						},
+						error => {
+							console.warn(error);
+							this.props.history.push('/not-found');
+						}
+					);
+				}
+			}
 		}
 	}
 
@@ -117,7 +130,7 @@ class LoadTemplate extends Component {
 
 		let Meta = () => null;
 
-		const Template = templates[this.props.template];
+		const Template = templates[this.state.template];
 
 		if (!Template) {
 			return <Redirect to="/not-found"/>;
