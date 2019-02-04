@@ -7,7 +7,7 @@ Wordpress, MySQL, PHP and PHPMyAdmin are all provided by Docker which makes it e
 Clone this repository locally and `cd` to the `client` folder and type `npm install`.
 
 ### Set Up Environment
-The React app relies on an `.env` file to configure itself to its environment, and this repo ships with an example that you can copy and rename.  To do so, make sure you're still in the `/client` directory, and then duplicate / rename `.env.example` by running `cp .env.example .env`.  The example `.env` file comes preloaded with the URL to the default Docker installation of Wordpress.
+The React app relies on a `.env` file to configure itself to its environment, and this repo ships with an example that you can copy and rename.  To do so, make sure you're still in the `/client` directory, and then duplicate / rename `.env.example` by running `cp .env.example .env`.  The example `.env` file comes preloaded with the URL to the default Docker installation of Wordpress.
 
 ### Docker
 First, make sure you have Docker installed locally.  Once you do, `cd` to `/api` to duplicate and rename `docker-compose.yml.example` by running `cp docker-compose.yml.example docker-compose.yml`.  Now we need to edit `api/docker-compose.yml` to link your local filesystem with Docker's Wordpress files.  To do so, open up our newly duplicated `docker-compose.yml` and change the following to match your local install directory.  
@@ -23,7 +23,7 @@ You may want to also swap all `ex_` prefixes for your project's abbreviation to 
 
 Feel free to make any other changes you'd like to the default user and database configurations but there's no real need locally. Just don't use defaults in production.
 
-Next, fire up Docker if it isn't already. Once this is done, ensure you're still in the `api` directory and and type `docker-compose up -d`.  You can now reach your WP instance via `http://localhost:8080`.
+Next, fire up Docker if it isn't already. Once this is done, ensure you're still in the `api` directory and type `docker-compose up -d`.  You can now reach your WP instance via `http://localhost:8080`.
 
 ### Wordpress Configuration
 After you're up and running, we need to navigate to `http://localhost:8080/wp-admin` and perform the following steps to Wordpress:
@@ -39,7 +39,7 @@ After you're up and running, we need to navigate to `http://localhost:8080/wp-ad
 
 ### Booting up the SSR app
 
-The server-side rendering configuraton in place serves the `/client/build` folder on port `1337`.  The `/build` folder contains the results of `create-react-app`'s `npm run build` command - so before attempting to test SSR, make sure you first run `npm run build`. After that, run `npm run serve` while still in the `/client` directory to fire up the server.
+The server-side rendering configuration in place serves the `/client/build` folder on port `1337`.  The `/build` folder contains the results of `create-react-app`'s `npm run build` command - so before attempting to test SSR, make sure you first run `npm run build`. After that, run `npm run serve` while still in the `/client` directory to fire up the server.
 
 ### Getting to Work
 
@@ -51,7 +51,7 @@ This repo comes preconfigured to support Sass.  As you can see, at Keen, we gene
 
 ## Caching API responses on the server side
 
-We use Redux both on the server and the client to cache the site content provided by Wordpress in memory.  This is a very simple approach but it works quite well in practice.  The first time a client requests a server rendered copy of a page, Node serves the contents of the `build` folder, without waiting for the asynchronous calls to the WP REST API.  But, this first call populates the in-memory Redux store - therefore any consecutive requests by clients to the same server rendered page will automatically pull from the Redux store - and will automatically populate the data from WP.
+We use Redux both on the server and the client to cache the site content provided by Wordpress in memory.  This is a very simple approach but it works quite well in practice.  The first time a client requests a server-rendered copy of a page, Node serves the contents of the `build` folder, without waiting for the asynchronous calls to the WP REST API.  But, this first call populates the in-memory Redux store - therefore any consecutive requests by clients to the same server rendered page will automatically pull from the Redux store - and will automatically populate the data from WP.
 
 ## Template Usage
 
