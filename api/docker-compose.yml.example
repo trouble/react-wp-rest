@@ -11,7 +11,7 @@ ex_wp_db:
   environment:
     MYSQL_ROOT_PASSWORD: examplepass
 phpmyadmin:
-  image: corbinu/docker-phpmyadmin
+  image: phpmyadmin/phpmyadmin
   links:
     - ex_wp_db:mysql
   ports:
